@@ -1,0 +1,86 @@
+h2{
+color:maroon;					
+}
+.widget-box {
+padding: 0;
+-webkit-box-shadow: none;
+box-shadow: none;
+margin: 3px 0;
+border: 1px solid #CCC;
+}
+.widget-header {
+box-sizing: content-box;
+position: relative;
+min-height: 38px;
+background: #f7f7f7 repeat-x;
+background-image: linear-gradient(to bottom,#fff 0,#eee 100%);
+color: #669fc7;
+border-bottom: 1px solid #DDD;
+padding-left: 12px;
+}
+
+.widget-header>.widget-title {
+line-height: 36px;
+padding: 0;
+margin: 0;
+display: inline;
+}
+.widget-body {
+background-color: #FFF;
+}
+.widget-main {
+padding: 12px;
+}
+.widget-main>form, .widget-main>form .input-append, .widget-main>form .input-prepend {
+margin-bottom: 0;
+}
+form {
+display: block;
+margin-top: 0em;
+}
+div {
+display: block;
+}
+h5 {
+font-size: 18px;
+font-weight: 400;
+font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.btn {
+display: inline-block;
+color: #FFF!important;
+text-shadow: 0 -1px 0 rgba(0,0,0,.25)!important;
+background-image: none!important;
+border: 5px solid #FFF;
+border-radius: 0;
+box-shadow: none!important;
+transition: all ease .15s;
+cursor: pointer;
+vertical-align: middle;
+margin: 0;
+position: relative;
+}
+.btn-info, .btn-info:focus {
+background-color: #6fb3e0!important;
+border-color: #6fb3e0;
+}
+.btn-sm {
+border-width: 4px;
+font-size: 13px;
+padding: 4px 9px;
+line-height: 1.39;
+}
+.input-small {
+width: 90px;
+max-width: 100%;
+}
+input[type=text], input[type=password]{
+color: #858585;
+background-color: #fff;
+border: 1px solid #d5d5d5;
+padding: 5px 4px 6px;
+font-size: 14px;
+font-family: inherit;
+box-shadow: none!important;
+transition-duration: .1s;
+}

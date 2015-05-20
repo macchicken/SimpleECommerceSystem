@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <security:http disable-url-rewriting="false">
+    	<security:headers disabled="true"/>
+    	<security:csrf disabled="true"/>
+        <security:intercept-url pattern="/eco/products/*" access="hasRole('USER')" />
+        <security:intercept-url pattern="/eco/orders/*" access="hasRole('USER')" />
+        <security:intercept-url pattern="/eco/carts/*" access="hasRole('USER')" />
+        <security:intercept-url pattern="/eco/mainPage" access="hasAnyRole('USER','ROLE_ADMIN')" />
+        <security:intercept-url pattern="/eco/admin/*" access="hasRole('ROLE_ADMIN')" />
+          
+        <security:form-login login-page="/login"
+            authentication-failure-url="/loginError"
+            default-target-url="/eco/mainPage"
+            login-processing-url="/j_spring_security_check"
+            always-use-default-target="true"/>
+        <security:logout logout-url="/logout" logout-success-url="/login" invalidate-session="true"/>
+        
+        <security:session-management session-fixation-protection="none">  
+            <security:concurrency-control/>  
+        </security:session-management>
+
+    </security:http>
+
+    <security:authentication-manager>
+        <security:authentication-provider>  
+            <security:user-service>
+				<security:user name="barry" password="123" authorities="ROLE_USER" />
+				<security:user name="daisy" password="123" authorities="ROLE_USER" />
+				<security:user name="lan" password="123" authorities="ROLE_ADMIN" />
+			</security:user-service>  
+        </security:authentication-provider>  
+    </security:authentication-manager>  
+   
+</beans>

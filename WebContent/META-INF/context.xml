@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/shoppingCart">   
+<Resource name="jdbc/ShoppingCart"
+          type="javax.sql.DataSource"
+          username="root"
+          password="123456"
+          driverClassName="com.mysql.jdbc.Driver"
+          maxIdle="2"
+          maxWait="5000"
+          maxActive="100" 
+          url="jdbc:mysql://localhost:20000/comp5347shop"   
+          poolPreparedStatements="true"
+/>
+
+</Context>

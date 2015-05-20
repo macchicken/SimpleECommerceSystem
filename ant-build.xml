@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="appwar" name="SimpleECommerceSystem">
+<property name="webContent" value="WebContent"/>
+<target name="appwar" description="create war pacakge for deploy">
+	<war destfile="SimpleECommerceSystem.war" webxml="${webContent}/WEB-INF/web.xml" manifest="${webContent}/META-INF/MANIFEST.MF">
+	  <fileset dir="${webContent}"/>
+	  <classes dir="build/classes"/>
+	</war>
+</target>
+</project>
