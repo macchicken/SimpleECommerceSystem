@@ -87,7 +87,7 @@ public class OrderController {
 		double shippingCost=(double) mresult.get("total");
 		order.setShippingCost(shippingCost);
 		order.setTotalCost(shippingCost+cart.getTotal());
-		model.addAttribute("success", " order "+order.getId()+" is processing to "+order.getCity());
+		model.addAttribute("success", " order "+order.getId()+" is processing to "+order.getCity()+", shipping cost is $"+shippingCost+" final cost is $"+order.getTotalCost());
 		odao.modifyOrder(order);
 		sessionStatus.setComplete();
 		return "messagePage";

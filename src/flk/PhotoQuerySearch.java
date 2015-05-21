@@ -1,4 +1,5 @@
 package flk;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -36,14 +37,14 @@ public class PhotoQuerySearch {
 	}
 	
 	public List<Product> getProducts(String keywords){		
-		HttpURLConnection urlConnection=null;
+		HttpURLConnection urlConnection=null;InputStream urlStream=null;
 		try{
 			String callUrlStr = Constants.REST_ENDPOINT+"?method="+Constants.METHODSEARCH+
 			"&format=rest"+"&per_page="+Constants.DEFAULT_NUMBER+"&api_key="+Constants.API_KEY+"&extras=tags,url_sq&tags="+keywords;
 			System.out.println(callUrlStr);
 			URL callUrl = new URL(callUrlStr);			
 			urlConnection = (HttpURLConnection)callUrl.openConnection();
-			InputStream urlStream = urlConnection.getInputStream();
+			urlStream = urlConnection.getInputStream();
 		
 			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document response = db.parse(urlStream);
@@ -70,6 +71,13 @@ public class PhotoQuerySearch {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}finally{
+			if (urlStream!=null){
+				try {
+					urlStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 			if (urlConnection!=null){
 				urlConnection.disconnect();
 			}

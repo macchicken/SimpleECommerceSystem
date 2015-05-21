@@ -23,7 +23,9 @@ public class RestSettingInit extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		super.init();
+		System.out.println("start load the city data");
 		CalculateSetting.getInstance();
+		System.out.println("end load the city data");
 	}
 
 	
