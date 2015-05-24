@@ -13,7 +13,6 @@
 
 <div id="header"></div>
 
-
 <div id="catalogue">
 <table border = "1">
 <thead>
@@ -72,7 +71,6 @@
 	});
 	$("#checkout").click(function(e){
 		e.preventDefault();
-		//window.location.href = $(this).attr("href");
 		$("#mainContent").load($(this).attr("href"));
 	});
    })

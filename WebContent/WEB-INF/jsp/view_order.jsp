@@ -33,7 +33,7 @@
                <td>${order.state}</td>
                <td>${order.createdTime}</td>
                <sec:authorize access="hasRole('USER')">
-                	<td><a href="orders/detail/${order.id}">detail</a></td>
+                	<td><a href="orders/detail/${order.id}" class="detail">detail</a></td>
 				</sec:authorize>
 				<sec:authorize access="hasRole('ROLE_ADMIN')">
 	                	<c:if test="${order.state=='processing'}">
@@ -54,7 +54,7 @@
 </body>
 <script type="text/javascript">
 $(document).ready(function(){
-	$(".update").click(function(e){
+	$(".update,.detail").click(function(e){
 		e.preventDefault(); 
 		$("#mainContent").load($(this).attr("href"));
 	});

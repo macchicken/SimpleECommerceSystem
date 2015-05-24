@@ -69,7 +69,7 @@ public class OrderController {
 		return "cart_partial";
 	}
 
-	@RequestMapping(value="/complete",method = RequestMethod.POST)
+	@RequestMapping(value="/complete",method = RequestMethod.GET)
 	public String completeOrder(Model model,@Valid @ModelAttribute("morder") Order order,BindingResult result,SessionStatus sessionStatus){
 		Cart cart=order.getCart();
 		if (result.hasErrors()){

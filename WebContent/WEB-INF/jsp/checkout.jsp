@@ -7,8 +7,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/style_new.css"/>"  media="screen" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/style_response.css"/>"  media="screen" />
 <title>Check out</title>
 </head>
 <body>

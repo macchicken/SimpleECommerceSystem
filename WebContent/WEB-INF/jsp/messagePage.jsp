@@ -8,7 +8,5 @@
 </head>
 <body>
 <p>${success}</p>
-
-<a href="${pageContext.request.contextPath}/eco/mainPage"> Back to home</a>
 </body>
 </html>

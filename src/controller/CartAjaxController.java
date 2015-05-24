@@ -80,7 +80,7 @@ public class CartAjaxController {
 		return "messagePage";
 	}
 
-	@RequestMapping(value="/complete",method = RequestMethod.POST)
+	@RequestMapping(value="/complete",method = RequestMethod.GET)
 	public String complete(Model model,@ModelAttribute("cart") Cart cart,@Valid @ModelAttribute("order") Order order,BindingResult result, SessionStatus sessionStatus,HttpSession sesison){
 		if (result.hasErrors()){
 			return "checkout";

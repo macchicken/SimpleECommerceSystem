@@ -7,16 +7,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/style_new.css"  media="screen" />
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/style_response.css"  media="screen" />
-<script src="${pageContext.request.contextPath}/resources/js/jquery.min-214.js"></script>
 <title>Order details</title>
 </head>
 <body>
 <div id="wrap">
 
 <div id="header"></div>
-
 
 <div id="catalogue">
 <table border = "1">
@@ -47,7 +43,6 @@
 
  </tbody>
 </table>
-<a href="${pageContext.request.contextPath}/eco/mainPage"> Back to home</a>
 </div>
 <div id="cartholder"> 
 <div id="cart">
@@ -73,7 +68,7 @@
 	<form:input type = "text" path="city" /> <form:errors path="city"/></label>
 	<br/>
 	<c:if test="${morder.state=='processing'}">
-		<input type = "submit" value = "Submit"/>
+		<input id="morderSubmit" type = "submit" value = "Submit"/>
 	</c:if>
 </form:form>
 </div>
@@ -99,6 +94,10 @@
 				alert("only one item left");return false;}
 			}
 		$("#cart").load($(this).attr("href"));
+	});
+	$("#morderSubmit").click(function(e){
+		e.preventDefault();
+		$("#mainContent").load($("#morder").attr("action"),$("#morder").serialize());
 	});
    })
 </script>

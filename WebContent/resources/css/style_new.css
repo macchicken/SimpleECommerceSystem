@@ -42,32 +42,31 @@ font-size: 18px;
 border-collapse: collapse
 }
 
-#cart {
-width: 150px;
-float: right;
-padding: 10px;
-border-left: 1px solid #000bbb;
-font-size: 12px;
-}
-#cartfoot {
-width: 150px;
-float: right;
-padding: 10px;
-border-left: 1px solid #000bbb;
-font-size: 12px;
-}
 #cartholder {
 position: relative;
 width: 10%;
-float: left;
+float: right;
 padding: 0 0 0 10px;
 border-left: 1px #000bbb;
 font-size: 12px;
 }
-#orderview {
-width: 150px;
+#cart {
+position: relative;
+width: 100%;
 float: right;
-padding: 10px;
+border-left: 1px solid #000bbb;
+font-size: 12px;
+}
+#cartfoot {
+position: relative;
+width: 100%;
+float: right;
+border-left: 1px solid #000bbb;
+font-size: 12px;
+}
+#orderview {
+width: 100%;
+float: right;
 border-left: 1px solid #000bbb;
 font-size: 12px;
 }
