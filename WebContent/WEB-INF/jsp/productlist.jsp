@@ -72,7 +72,8 @@
 	});
 	$("#checkout").click(function(e){
 		e.preventDefault();
-		window.location.href = $(this).attr("href");
+		//window.location.href = $(this).attr("href");
+		$("#mainContent").load($(this).attr("href"));
 	});
    })
 </script>

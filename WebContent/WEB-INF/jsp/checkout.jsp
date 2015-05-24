@@ -24,13 +24,19 @@
 <label>city
 <form:input type = "text" path="city" /> <form:errors path="city"/></label>
 <br/>
-<input type = "submit" value = "Submit"/>
+<input id="orderSubmit" type = "submit" value = "Submit"/>
 <br/>
 <input type = "reset" />
 </form:form>
 <a href="${pageContext.request.contextPath}/eco/carts/discard"> discard this order</a>
 <a href="${pageContext.request.contextPath}/eco/mainPage"> Back to home</a>
 <script type="text/javascript">
+$(document).ready(function(){
+	$("#orderSubmit").click(function(e){
+		e.preventDefault();
+		$("#mainContent").load($("#order").attr("action"),$("#order").serialize());
+	});
+});
 </script>
 </body>
 </html>
