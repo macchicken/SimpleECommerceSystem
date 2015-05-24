@@ -9,7 +9,7 @@ img { border: none; width: 80px;}
 
 #wrap {
 margin: 0 auto;
-width: 800px;
+width: 100%;
 }
 
 #header {
@@ -28,9 +28,10 @@ padding: 0px 20px 0px 20px;
 }
 
 #catalogue {
-width: 568px;
-float: left;
-text-align: justify;
+  overflow: hidden;
+  width: 80%;
+  float: left;
+  text-align: justify;
 }
 
 #catalogue h1{
@@ -56,9 +57,10 @@ border-left: 1px solid #000bbb;
 font-size: 12px;
 }
 #cartholder {
-width: 150px;
-float: right;
-padding: 10px;
+position: relative;
+width: 10%;
+float: left;
+padding: 0 0 0 10px;
 border-left: 1px #000bbb;
 font-size: 12px;
 }
