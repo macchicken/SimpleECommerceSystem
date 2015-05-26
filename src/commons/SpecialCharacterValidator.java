@@ -19,7 +19,7 @@ public class SpecialCharacterValidator implements ConstraintValidator<SpecialCha
 	@Override
 	public boolean isValid(String str,ConstraintValidatorContext arg1){
 		if (str==null||"".equals(str)){
-			return false;
+			return true;
 		}
 		return !specialCP.matcher(str).matches();
 	}
