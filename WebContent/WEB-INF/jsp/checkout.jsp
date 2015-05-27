@@ -27,7 +27,6 @@
 <input type = "reset" />
 </form:form>
 <a href="${pageContext.request.contextPath}/eco/carts/discard"> discard this order</a>
-<a href="${pageContext.request.contextPath}/eco/mainPage"> Back to home</a>
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#orderSubmit").click(function(e){

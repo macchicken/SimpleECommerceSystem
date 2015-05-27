@@ -24,7 +24,8 @@
     <servlet-name>ecommerce</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-  <servlet>
+
+  <!--<servlet>
     <servlet-name>EcommerceRest</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
@@ -36,7 +37,8 @@
   <servlet-mapping>
     <servlet-name>EcommerceRest</servlet-name>
     <url-pattern>/rest/*</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>-->
+
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

@@ -71,7 +71,7 @@
 	});
 	$("#checkout").click(function(e){
 		e.preventDefault();
-		$("#mainContent").load($(this).attr("href"));
+		$("#cartholder").load($(this).attr("href"));
 	});
    })
 </script>

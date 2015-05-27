@@ -40,7 +40,7 @@ public class RemoteServiceBridge {
 	}
 	
 	public RestMessage calculate(Order order){
-		WebTarget root = client.target(remote+"/SimpleECommerceSystem/rest/calculate/");
+		WebTarget root = client.target(remote+"/rest/calculate/");
 		Cart cart=order.getCart();
 		RestMessage r=root.path(order.getCity()+"-"+cart.getTotalItem()+"-"+order.getId()).request().get(Response.class).readEntity(RestMessage.class);
 		return r;
