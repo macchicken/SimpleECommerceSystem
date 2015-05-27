@@ -44,9 +44,9 @@ border-collapse: collapse
 
 #cartholder {
 position: relative;
-width: 10%;
+width: 19%;
 float: right;
-padding: 0 0 0 10px;
+padding: 0 0 0 1px;
 border-left: 1px #000bbb;
 font-size: 12px;
 }
