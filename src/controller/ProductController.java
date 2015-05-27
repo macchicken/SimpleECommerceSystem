@@ -57,7 +57,7 @@ public class ProductController {
 		boolean needSearch=true;
 		if ("".equals(keyword.trim())){
 			keyword="tiger";
-			if (c!=null){
+			if (c!=null&&c.getTotalItem()!=0){
 				needSearch=false;
 			}
 		}else{

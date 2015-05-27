@@ -11,7 +11,9 @@
 </head>
 <body>
 
-<jsp:include page="cart_partial.jsp"></jsp:include>
+<div id="cart"> 
+ <jsp:include page="cart_partial.jsp"></jsp:include>
+</div>
 <form:form action="${pageContext.request.contextPath}/eco/carts/complete" method = "post" commandName="order" >
 <label>address 1
 <form:input type = "text" path="address1" /> <form:errors path="address1"/></label>
@@ -26,12 +28,17 @@
 <br/>
 <input type = "reset" />
 </form:form>
-<a href="${pageContext.request.contextPath}/eco/carts/discard"> discard this order</a>
+<input type="button" class="btn btn-info btn-sm" href="${pageContext.request.contextPath}/eco/carts/discard" name="discard" id="discard" value="Discard this orde">
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#orderSubmit").click(function(e){
 		e.preventDefault();
-		$("#mainContent").load($("#order").attr("action"),$("#order").serialize());
+		if($(".proId").length==0){alert("please choose at least one item before checkout");return false;}
+		$("#cartholder").load($("#order").attr("action"),$("#order").serialize());
+	});
+	$("#discard").click(function(e){
+		e.preventDefault();
+		$("#cartholder").load($(this).attr("href"));
 	});
 });
 </script>

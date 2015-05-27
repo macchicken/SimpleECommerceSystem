@@ -1,6 +1,7 @@
 package model;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class Cart{
@@ -57,6 +58,16 @@ public class Cart{
 			totalI += ci.getQuantity();
 		}
 		return totalI;
+	}
+
+	public void cleanCart(){
+		Iterator<CartItem> it=carts.values().iterator();
+		while(it.hasNext()){
+			CartItem ci=it.next();
+			if (ci.getQuantity()==0){
+				it.remove();
+			}
+		}
 	}
 
 }

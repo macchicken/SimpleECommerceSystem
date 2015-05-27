@@ -44,7 +44,7 @@
 
 </div>
 <div id="cartholder"> 
-<div id="cart"> 
+<div id="cart">
  <jsp:include page="cart_partial.jsp"></jsp:include>
 </div>
 <div id="cartfoot">
@@ -71,6 +71,7 @@
 	});
 	$("#checkout").click(function(e){
 		e.preventDefault();
+		if($(".proId").length==0){alert("please choose at least one item before checkout");return false;}
 		$("#cartholder").load($(this).attr("href"));
 	});
    })

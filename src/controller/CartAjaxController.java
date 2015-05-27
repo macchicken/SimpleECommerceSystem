@@ -76,7 +76,7 @@ public class CartAjaxController {
 	@RequestMapping("/discard")
 	public String disCard(Model model,@ModelAttribute("cart") Cart cart,@ModelAttribute("order") Order order,SessionStatus sessionStatus){
 		sessionStatus.setComplete();
-		model.addAttribute("success", "you have discarded the order shipping to "+order.getAddress1()+","+order.getAddress2()+","+order.getCity());
+		model.addAttribute("success", "you have discarded this order");
 		return "messagePage";
 	}
 
@@ -87,20 +87,21 @@ public class CartAjaxController {
 		}
 		order.setCart(cart);
 		RestMessage r=rb.calculate(order);
+		Map<String,Object> mresult=r.getResult();
+		String newId=(String) mresult.get("newId");
+		order.setId(newId);
 		String status=r.getStatus();
 		if ("fail".equals(status)){
 			result.rejectValue("city", "error.order", "sorry,we can not post to "+order.getCity());
 			return "checkout";
 		}
-		Map<String,Object> mresult=r.getResult();
 		double shippingCost=(double) mresult.get("total");
-		String newId=(String) mresult.get("newId");
 		order.setShippingCost(shippingCost);
 		order.setTotalCost(shippingCost+cart.getTotal());
-		order.setId(newId);
 		model.addAttribute("success", " order "+newId+" is processing to "+order.getCity()+", shipping cost is $"+shippingCost+" final cost is $"+order.getTotalCost());
 		SimpleUser user=(SimpleUser) sesison.getAttribute("currentUser");
 		order.setUser(user.getName());
+		cart.cleanCart();order.setCart(cart);
 		odao.addNewOrder(order);
 		sessionStatus.setComplete();
 		return "messagePage";

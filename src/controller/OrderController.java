@@ -74,14 +74,14 @@ public class OrderController {
 		Cart cart=order.getCart();
 		if (result.hasErrors()){
 			model.addAttribute("cart",cart);
-			return "order_detail";
+			return "order_cartholder";
 		}
 		RestMessage r=rb.calculate(order);
 		String status=r.getStatus();
 		if ("fail".equals(status)){
 			result.rejectValue("city", "error.morder", "sorry,we can not post to "+order.getCity());
 			model.addAttribute("cart",cart);
-			return "order_detail";
+			return "order_cartholder";
 		}
 		Map<String,Object> mresult=r.getResult();
 		double shippingCost=(double) mresult.get("total");

@@ -20,6 +20,9 @@
 <thead>
 <tr>
 <th>Id</th><th>Address</th><th>Shipping Cost</th><th>Total Cost</th><th>State</th><th>Order Time</th><th>Action</th>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+<th>User</th>
+</sec:authorize>
 </tr>
 </thead>
 <tbody>
@@ -36,9 +39,13 @@
                 	<td><a href="orders/detail/${order.id}" class="detail">detail</a></td>
 				</sec:authorize>
 				<sec:authorize access="hasRole('ROLE_ADMIN')">
-	                	<c:if test="${order.state=='processing'}">
-		                	<td><a href="admin/update/${order.id}" class="update">update</a></td>
-						</c:if>
+						<c:choose>
+							<c:when test="${order.state=='processing'}">
+								<td><a href="admin/update/${order.id}" class="update">update</a></td>
+	    					</c:when>
+    						<c:otherwise><td></td></c:otherwise>
+						</c:choose>
+						<td>${order.user}</td>
 				</sec:authorize>
            </tr>
 

@@ -7,4 +7,22 @@
 	  <classes dir="build/classes"/>
 	</war>
 </target>
+<target name="restwar" description="create rest service war pacakge for deploy">
+	<war destfile="SimpleECommerceSystem-rest.war" webxml="restConfig/web.xml" manifest="${webContent}/META-INF/MANIFEST.MF">
+	  <fileset dir="${webContent}">
+	  	<exclude name="WEB-INF/jsp/"/>
+	  	<exclude name="resources/"/>
+	  	<exclude name="WEB-INF/ecommerce-context.xml"/>
+	  	<exclude name="WEB-INF/ecommerce-servlet.xml"/>
+	  	<exclude name="index.jsp"/>
+	  	<exclude name="WEB-INF/web.xml"/>
+	  	<exclude name="META-INF/context.xml"/>
+	  </fileset>
+	  <classes dir="build/classes">
+	  	<exclude name="dao/"/>
+	  	<exclude name="flk/"/>
+	  	<exclude name="controller/"/>
+		</classes>
+	</war>
+</target>
 </project>

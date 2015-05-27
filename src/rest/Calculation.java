@@ -30,8 +30,10 @@ public class Calculation {
 		if("0".equals(id)){
 			id=java.util.UUID.randomUUID().toString().replaceAll("-", "");
 		}
-		System.out.println("receiving order "+id+" with "+items+" shipped to "+city);
+		System.out.println("receiving order "+id+" with "+items+" items shipped to "+city);
 		RestMessage mess=new RestMessage();
+		Map<String,Object> result=new HashMap<String,Object>();
+		result.put("newId", id);
 		String cost=setting.getCost(city);
 		if (cost==null){
 			mess.setStatus("fail");
@@ -40,15 +42,13 @@ public class Calculation {
 			String[] t=cost.split(",");
 			double perItemC=Double.valueOf(t[1]);
 			double deliverC=Double.valueOf(t[0]);
-			Map<String,Object> result=new HashMap<String,Object>();
 			result.put("perItem", perItemC);
 			result.put("deliver", deliverC);
 			double totalF=perItemC*items+deliverC;
 			result.put("total", totalF);
-			result.put("newId", id);
-			mess.setResult(result);
 			System.out.print("the shipping fee for order "+id+" is: $"+totalF);
 		}
+		mess.setResult(result);
 		return mess;
 	}
 
