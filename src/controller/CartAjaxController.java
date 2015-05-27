@@ -85,11 +85,6 @@ public class CartAjaxController {
 		if (result.hasErrors()){
 			return "checkout";
 		}
-		String newId=order.getId();
-		if (newId==null){
-			newId= java.util.UUID.randomUUID().toString().replaceAll("-", "");
-			order.setId(newId);
-		}
 		order.setCart(cart);
 		RestMessage r=rb.calculate(order);
 		String status=r.getStatus();
@@ -99,8 +94,10 @@ public class CartAjaxController {
 		}
 		Map<String,Object> mresult=r.getResult();
 		double shippingCost=(double) mresult.get("total");
+		String newId=(String) mresult.get("newId");
 		order.setShippingCost(shippingCost);
 		order.setTotalCost(shippingCost+cart.getTotal());
+		order.setId(newId);
 		model.addAttribute("success", " order "+newId+" is processing to "+order.getCity()+", shipping cost is $"+shippingCost+" final cost is $"+order.getTotalCost());
 		SimpleUser user=(SimpleUser) sesison.getAttribute("currentUser");
 		order.setUser(user.getName());

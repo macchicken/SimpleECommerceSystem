@@ -27,6 +27,9 @@ public class Calculation {
 	@Path("{city}-{items}-{id}")
 	@Produces(MediaType.TEXT_XML)
 	public RestMessage calculateFee(@PathParam("city") String city,@PathParam("items") int items,@PathParam("id") String id) {
+		if("0".equals(id)){
+			id=java.util.UUID.randomUUID().toString().replaceAll("-", "");
+		}
 		System.out.println("receiving order "+id+" with "+items+" shipped to "+city);
 		RestMessage mess=new RestMessage();
 		String cost=setting.getCost(city);
@@ -42,6 +45,7 @@ public class Calculation {
 			result.put("deliver", deliverC);
 			double totalF=perItemC*items+deliverC;
 			result.put("total", totalF);
+			result.put("newId", id);
 			mess.setResult(result);
 			System.out.print("the shipping fee for order "+id+" is: $"+totalF);
 		}

@@ -11,8 +11,7 @@ import commons.SpecialCharacter;
 @XmlRootElement
 public class Order{
 
-	private String id;
-
+	private String id="0";
 	
 	@NotEmpty(message="You must supply a adrress")
 	@SpecialCharacter
