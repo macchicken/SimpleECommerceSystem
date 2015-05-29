@@ -1,4 +1,4 @@
-package commons;
+package service;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -12,16 +12,30 @@ import model.Cart;
 import model.Order;
 import model.RestMessage;
 
-
+/**
+ * a singleton service bridge of communicating with remote service
+ * @author Barry
+ * @version 1.0
+ * @since 29/05/2015
+ */
 public class RemoteServiceBridge {
 
+	/**
+	 * local client
+	 */
 	private Client client;
+	/**
+	 * remote address of the service
+	 */
 	private String remote;
 	
 	private static class RemoteServiceBridgeHolder{
 		private static final RemoteServiceBridge INSTANCE=new RemoteServiceBridge();
 	}
 
+	/**
+	 * private constructor to be used in this singleton
+	 */
 	private RemoteServiceBridge(){
 		client = ClientBuilder.newClient();
 		Properties properties = new Properties();
@@ -31,7 +45,7 @@ public class RemoteServiceBridge {
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("exception on reading systemconfig.properties, using local service");
-			remote="http://localhost:10080";
+			remote="http://localhost:10080/SimpleECommerceSystem";
 		}
 	}
 	
@@ -39,6 +53,12 @@ public class RemoteServiceBridge {
 		return RemoteServiceBridgeHolder.INSTANCE;
 	}
 	
+	/**
+	 * call the remote calculating service
+	 * @param order
+	 * @return
+	 * @see Order
+	 */
 	public RestMessage calculate(Order order){
 		WebTarget root = client.target(remote+"/rest/calculate/");
 		Cart cart=order.getCart();

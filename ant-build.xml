@@ -20,8 +20,8 @@
 	  </fileset>
 	  <classes dir="build/classes">
 	  	<exclude name="dao/"/>
-	  	<exclude name="flk/"/>
 	  	<exclude name="controller/"/>
+	  	<exclude name="service/"/>
 		</classes>
 	</war>
 </target>

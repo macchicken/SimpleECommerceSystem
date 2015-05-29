@@ -10,25 +10,52 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+/**
+ * Controller of an user login
+ * 
+ * @author Barry
+ * @version 1.0
+ * @since 29/05/2015
+ */
 @Controller
 @SessionAttributes("currentUser")
 public class LoginController {
 
+	/**
+	 * to login page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/login")
     public String login(Model model) {
         return "login";
     }
 
+	/**
+	 * to login error page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/loginError")
     public String loginError(Model model) {
         return "loginError";
     }
 
+	/**
+	 * logout process
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/logout")
 	public String logout(Model model) {
 		return "/login";
 	}
 
+	/**
+	 * to main page after login successfully and store the user information in the session
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/eco/mainPage")
 	public String simplePage(Model model) {
 		if (!model.containsAttribute("currentUser")) {

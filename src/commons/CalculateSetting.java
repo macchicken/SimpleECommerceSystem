@@ -9,7 +9,12 @@ import java.util.Map.Entry;
 
 import com.mysql.jdbc.StringUtils;
 
-
+/**
+ * Singleton bean of storing settings for calculation service
+ * @author Barry
+ * @version 1.0
+ * @since 29/05/2015
+ */
 public class CalculateSetting {
 
 	private static Map<String,String> settings=new HashMap<String,String>();
@@ -18,6 +23,9 @@ public class CalculateSetting {
 		private static final CalculateSetting INSTANCE=new CalculateSetting();
 	}
 	
+	/**
+	 * private constructor used in this Singlton
+	 */
 	private CalculateSetting(){
 		Properties properties = new Properties();
 		try {
@@ -38,6 +46,12 @@ public class CalculateSetting {
 		return SettingHolder.INSTANCE;
 	}
 	
+	/**
+	 * Return a string of per item shipping cost and delivery cost of a city
+	 * 
+	 * @param city
+	 * @return
+	 */
 	public String getCost(String city){
 		if (StringUtils.isNullOrEmpty(city)){return null;}
 		city=city.toLowerCase();

@@ -14,15 +14,35 @@ import model.RestMessage;
 
 import commons.CalculateSetting;
 /**
- * Representing the calculate in Rest web Services 
+ * Representing the calculation of e-commerce system in Rest web Services
+ * 
+ * @author Barry
+ * @version 1.0
+ * @since 29/05/2015
  */
 @Path("/calculate")
 public class Calculation {
 
-	@Context UriInfo uriInfo; //like an instance variable definition
+	/**
+	 * like an instance variable definition
+	 */
+	@Context UriInfo uriInfo;
 	
+	/**
+	 * setting of calculaiton
+	 */
 	private CalculateSetting setting=CalculateSetting.getInstance();
 
+	/**
+	 * Returns the shipping fee of certain amount of items deliver to a city
+	 * 
+	 * @param city 		destination city to deliver
+	 * @param items		amount of items to deliver
+	 * @param id		order id, 0 if it is a new order
+	 * @return			RestMessage containing result of calculation
+	 * @see				RestMessage
+	 * @since			29/05/2015
+	 */
 	@GET
 	@Path("{city}-{items}-{id}")
 	@Produces(MediaType.TEXT_XML)

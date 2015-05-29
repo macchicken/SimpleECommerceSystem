@@ -22,19 +22,40 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import commons.RemoteServiceBridge;
+import service.RemoteServiceBridge;
 import dao.DaoFactory;
 import dao.IOrderDao;
 
+/**
+ * Controller of manipulating an existing order
+ * 
+ * @author Barry
+ * @version 1.0
+ * @since 29/05/2015
+ */
 @Controller
 @RequestMapping("/eco/orders")
 @SessionAttributes("morder")
 public class OrderController {
 
+	/**
+	 * a service of communicating with remote service
+	 * @see RemoteServiceBridge
+	 */
 	private RemoteServiceBridge rb=RemoteServiceBridge.getInstance();
+	/**
+	 * dao service of order
+	 * @see IOrderDao
+	 */
 	private IOrderDao odao=DaoFactory.getInstance().getOrderDao();
 
 
+	/**
+	 * retrieve orders from current login user
+	 * @param model
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadOrders(Model model,HttpSession session){
 		SimpleUser user=(SimpleUser) session.getAttribute("currentUser");
@@ -43,6 +64,12 @@ public class OrderController {
 		return "view_order";
 	}
 
+	/**
+	 * retrieve the details of an order
+	 * @param orderId
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/detail/{orderId}",method = RequestMethod.GET)
 	public String getOrder(@PathVariable String orderId,Model model){
 		Order order=odao.getOrderDetail(orderId);
@@ -51,6 +78,14 @@ public class OrderController {
 		return "order_detail";
 	}
 
+	/**
+	 * increase the quantity of an item in the order
+	 * @param productId
+	 * @param model
+	 * @param order
+	 * @see Order
+	 * @return
+	 */
 	@RequestMapping(value="/addItem/{productId}",method = RequestMethod.GET)
 	public String addItem(@PathVariable String productId,Model model,@ModelAttribute("morder") Order order){
 		Cart cart=order.getCart();
@@ -60,6 +95,14 @@ public class OrderController {
 		return "cart_partial";
 	}
 
+	/**
+	 * decrease the quantity of an item in the order
+	 * @param productId
+	 * @param model
+	 * @param order
+	 * @see Order
+	 * @return
+	 */
 	@RequestMapping(value="/removeItem/{productId}",method = RequestMethod.GET)
 	public String removeItem(@PathVariable String productId,Model model,@ModelAttribute("morder") Order order){
 		Cart cart=order.getCart();
@@ -68,6 +111,15 @@ public class OrderController {
 		return "cart_partial";
 	}
 
+	/**
+	 * process the modification of this order
+	 * @param model
+	 * @param order
+	 * @param result
+	 * @param sessionStatus
+	 * @see Order
+	 * @return
+	 */
 	@RequestMapping(value="/complete",method = RequestMethod.GET)
 	public String completeOrder(Model model,@Valid @ModelAttribute("morder") Order order,BindingResult result,SessionStatus sessionStatus){
 		Cart cart=order.getCart();

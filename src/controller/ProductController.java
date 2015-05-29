@@ -12,8 +12,6 @@ import model.Cart;
 import model.CartItem;
 import model.Product;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,18 +19,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import flk.PhotoQuerySearch;
+import service.flk.PhotoQuerySearch;
 
-
+/**
+ * Controller of retreiving products
+ * 
+ * @author Barry
+ * @version 1.0
+ * @since 29/05/2015
+ */
 @Controller
 @RequestMapping("/eco/products")
 @SessionAttributes("sproducts")
 public class ProductController {
 
-	static Log log = LogFactory.getLog(ProductController.class);
-	String classname = this.getClass().getName();
+	/**
+	 * service of querying products
+	 * @see PhotoQuerySearch
+	 */
 	private PhotoQuerySearch qs=PhotoQuerySearch.getInstance();
 
+	/**
+	 * retreiving products with default search key word
+	 * @param model
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String listAll(Model model,HttpSession session){
 		List<Product> result=qs.getProducts("tiger");
@@ -49,6 +61,13 @@ public class ProductController {
 		return "productlist";
 	}
 
+	/**
+	 * retreiving products with a search key word
+	 * @param keyword	search key word
+	 * @param model
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/search",method = RequestMethod.GET)
 	public String searchProducts(@RequestParam(value="keyword", required=false, defaultValue="") String keyword,Model model,HttpSession session){
 		System.out.println("search keyword "+keyword);

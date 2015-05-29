@@ -20,6 +20,11 @@ import model.CartItem;
 import model.Order;
 import model.Product;
 
+/**
+ * Mysql implemenataion of IOrderDao service
+ * @author Barry
+ *
+ */
 public class OrderDao implements IOrderDao{
 
 	private DataSource ds;

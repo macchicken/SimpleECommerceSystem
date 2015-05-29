@@ -1,4 +1,4 @@
-package flk;
+package service.flk;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -20,9 +20,10 @@ import commons.Tools;
 
 
 /**
- * This showcase the request for flickr panda service using REST style
+ * a singleton of the request for flickr panda service using REST style
  * @author barry
- *
+ * @version 1.0
+ * @since 29/05/2015
  */
 public class PhotoQuerySearch {
 	
@@ -36,6 +37,12 @@ public class PhotoQuerySearch {
 		return PhotoQuerySearchHolder.INSTANCE;
 	}
 	
+	/**
+	 * search photos with key words
+	 * @param keywords
+	 * @return
+	 * @see Product
+	 */
 	public List<Product> getProducts(String keywords){		
 		HttpURLConnection urlConnection=null;InputStream urlStream=null;
 		try{

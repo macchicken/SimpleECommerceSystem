@@ -21,34 +21,74 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import commons.RemoteServiceBridge;
+import service.RemoteServiceBridge;
 import dao.DaoFactory;
 import dao.IOrderDao;
 
-
+/**
+ * Controller of manipulating a shopping cart
+ * 
+ * @author Barry
+ * @version 1.0
+ * @since 29/05/2015
+ */
 @Controller
 @RequestMapping("/eco/carts")
 @SessionAttributes({"cart","order"})
 public class CartAjaxController {
 
+	/**
+	 * a service of communicating with remote service
+	 * @see RemoteServiceBridge
+	 */
 	private RemoteServiceBridge rb=RemoteServiceBridge.getInstance();
+	/**
+	 * dao service of order
+	 * @see IOrderDao
+	 */
 	private IOrderDao odao=DaoFactory.getInstance().getOrderDao();
 	
+	/**
+	 * initialize a cart while it is null
+	 * @see Cart
+	 * @return
+	 */
 	@ModelAttribute("cart")
 	public Cart createCart(){
 		return new Cart();
 	}
 
+	/**
+	 * initialize a order while it is null
+	 * @see Order
+	 * @return
+	 */
 	@ModelAttribute("order")
 	public Order createOrder(){
 		return new Order();
 	}
 	
+	/**
+	 * load a partical page of displaying the cart
+	 * @param model
+	 * @param cart
+	 * @see Cart
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadCart(Model model, @ModelAttribute("cart") Cart cart){
 		return "cart_partial";
 	}
 
+	/**
+	 * Add a product to the shopping cart
+	 * @param productId
+	 * @param model
+	 * @param cart
+	 * @param sesison
+	 * @see Cart
+	 * @return
+	 */
 	@RequestMapping("/add/{productId}")
 	public String add(@PathVariable String productId, Model model, @ModelAttribute("cart") Cart cart,HttpSession sesison){
 		Map<String,Product> sproducts=(Map<String, Product>) sesison.getAttribute("sproducts");
@@ -57,6 +97,15 @@ public class CartAjaxController {
 		return "cart_partial";
 	}
 
+	/**
+	 * decrease the quantity of the product in the cart
+	 * @param productId
+	 * @param model
+	 * @param cart
+	 * @param sesison
+	 * @see Cart
+	 * @return
+	 */
 	@RequestMapping("/remove/{productId}")
 	public String remove(@PathVariable String productId, Model model,@ModelAttribute("cart") Cart cart,HttpSession sesison){
 		if (cart.getItems().size()>0){
@@ -72,6 +121,16 @@ public class CartAjaxController {
 		return "checkout";
 	}
 
+	/**
+	 * Discard this order before submit to checkout
+	 * @param model
+	 * @param cart
+	 * @param order
+	 * @param sessionStatus
+	 * @see Cart
+	 * @see Order
+	 * @return
+	 */
 	@RequestMapping("/discard")
 	public String disCard(Model model,@ModelAttribute("cart") Cart cart,@ModelAttribute("order") Order order,SessionStatus sessionStatus){
 		sessionStatus.setComplete();
@@ -79,6 +138,18 @@ public class CartAjaxController {
 		return "messagePage";
 	}
 
+	/**
+	 * checkout this order with extra detail of this order
+	 * @param model
+	 * @param cart
+	 * @param order
+	 * @param result
+	 * @param sessionStatus
+	 * @param sesison
+	 * @see Cart
+	 * @see Order
+	 * @return
+	 */
 	@RequestMapping(value="/complete",method = RequestMethod.GET)
 	public String complete(Model model,@ModelAttribute("cart") Cart cart,@Valid @ModelAttribute("order") Order order,BindingResult result, SessionStatus sessionStatus,HttpSession sesison){
 		if (result.hasErrors()){

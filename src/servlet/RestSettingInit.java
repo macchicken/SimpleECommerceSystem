@@ -8,6 +8,9 @@ import commons.CalculateSetting;
 
 /**
  * Servlet implementation class RestSettingInit
+ * @author Barry
+ * @version 1.0
+ * @since 29/05/2015
  */
 @WebServlet("/RestSettingInit")
 public class RestSettingInit extends HttpServlet {

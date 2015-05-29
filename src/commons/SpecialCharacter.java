@@ -10,7 +10,13 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.ReportAsSingleViolation;
 
-
+/**
+ * An annotation of special character checking
+ * 
+ * @author Barry
+ * @version 1.0
+ * @since 29/05/2015
+ */
 @Documented
 @Constraint(validatedBy=SpecialCharacterValidator.class)
 @ReportAsSingleViolation

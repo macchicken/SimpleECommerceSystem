@@ -4,10 +4,23 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * A message data transfer object to be used for communicating with web service
+ * 
+ * @author Barry
+ * @version 1.0
+ * @since 29/05/2015
+ */
 @XmlRootElement
 public class RestMessage {
 
+	/**
+	 * resulting status of one calling a web service 
+	 */
 	private String status;
+	/**
+	 * returns of a web service
+	 */
 	private Map<String,Object> result;
 
 	public String getStatus() {
