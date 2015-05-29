@@ -31,7 +31,7 @@
         <security:logout logout-url="/logout" logout-success-url="/login" invalidate-session="true"/>
         
         <security:session-management session-fixation-protection="none">  
-            <security:concurrency-control/>  
+            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>  
         </security:session-management>
 
     </security:http>
