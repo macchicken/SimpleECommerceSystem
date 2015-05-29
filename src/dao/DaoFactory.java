@@ -2,7 +2,7 @@ package dao;
 
 public class DaoFactory {
 
-	private OrderDao odao;
+	private IOrderDao odao;
 	
 	private static class DaoFactoryHolder{
 		private static final DaoFactory INSTANCE = new DaoFactory();
@@ -17,7 +17,7 @@ public class DaoFactory {
 		return DaoFactoryHolder.INSTANCE;
 	}
 
-	public OrderDao getOrderDao() {
+	public IOrderDao getOrderDao() {
 		return odao;
 	}
 

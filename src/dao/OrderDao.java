@@ -20,7 +20,7 @@ import model.CartItem;
 import model.Order;
 import model.Product;
 
-public class OrderDao {
+public class OrderDao implements IOrderDao{
 
 	private DataSource ds;
 

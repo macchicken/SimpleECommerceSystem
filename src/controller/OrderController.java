@@ -23,9 +23,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import commons.RemoteServiceBridge;
-
 import dao.DaoFactory;
-import dao.OrderDao;
+import dao.IOrderDao;
 
 @Controller
 @RequestMapping("/eco/orders")
@@ -33,7 +32,7 @@ import dao.OrderDao;
 public class OrderController {
 
 	private RemoteServiceBridge rb=RemoteServiceBridge.getInstance();
-	private OrderDao odao=DaoFactory.getInstance().getOrderDao();
+	private IOrderDao odao=DaoFactory.getInstance().getOrderDao();
 
 
 	@RequestMapping(method = RequestMethod.GET)

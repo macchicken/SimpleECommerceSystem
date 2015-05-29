@@ -22,9 +22,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import commons.RemoteServiceBridge;
-
 import dao.DaoFactory;
-import dao.OrderDao;
+import dao.IOrderDao;
 
 
 @Controller
@@ -33,7 +32,7 @@ import dao.OrderDao;
 public class CartAjaxController {
 
 	private RemoteServiceBridge rb=RemoteServiceBridge.getInstance();
-	private OrderDao odao=DaoFactory.getInstance().getOrderDao();
+	private IOrderDao odao=DaoFactory.getInstance().getOrderDao();
 	
 	@ModelAttribute("cart")
 	public Cart createCart(){

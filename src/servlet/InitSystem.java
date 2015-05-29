@@ -3,7 +3,6 @@ package servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import commons.CalculateSetting;
 import commons.RemoteServiceBridge;
 
 import dao.DaoFactory;
@@ -27,7 +26,7 @@ public class InitSystem extends HttpServlet {
 	public void init() throws ServletException {
 		super.init();
 		System.out.println("start to load singleton bean in the simple e-comerce system");
-		CalculateSetting.getInstance();
+//		CalculateSetting.getInstance();
 		PhotoQuerySearch.getInstance();
 		RemoteServiceBridge.getInstance();
 		DaoFactory.getInstance();

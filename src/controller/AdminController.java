@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import dao.DaoFactory;
-import dao.OrderDao;
+import dao.IOrderDao;
 
 @Controller
 @RequestMapping("/eco/admin")
 public class AdminController {
 
-	private OrderDao odao=DaoFactory.getInstance().getOrderDao();
+	private IOrderDao odao=DaoFactory.getInstance().getOrderDao();
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadCart(Model model){
