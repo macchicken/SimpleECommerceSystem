@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import model.Cart;
+import model.CartItem;
 import model.Order;
 import model.Product;
 import model.RestMessage;
@@ -168,13 +169,25 @@ public class CartAjaxController {
 		double shippingCost=(double) mresult.get("total");
 		order.setShippingCost(shippingCost);
 		order.setTotalCost(shippingCost+cart.getTotal());
-		model.addAttribute("success", " order "+newId+" is processing to "+order.getCity()+", shipping cost is $"+shippingCost+" final cost is $"+order.getTotalCost());
 		SimpleUser user=(SimpleUser) sesison.getAttribute("currentUser");
 		order.setUser(user.getName());
 		cart.cleanCart();order.setCart(cart);
+		String success=transform(cart);
+		success+="<p>order "+newId+" is processing to "+order.getCity()+", shipping cost is $"+shippingCost+" final cost is $"+order.getTotalCost()+"</p>";
+		model.addAttribute("success", success);
 		odao.addNewOrder(order);
 		sessionStatus.setComplete();
 		return "messagePage";
 	}
 	
+	private String transform(Cart cart){
+		String result="";
+		for (CartItem ci:cart.getItems()){
+			if (ci.getQuantity()>0) {
+				result += "<p>" + ci.getProduct().getTitle() + " quantity: "+ ci.getQuantity()+"</p>";
+			}
+		}
+		return result;
+	}
+
 }
