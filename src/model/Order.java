@@ -2,6 +2,7 @@ package model;
 
 import java.sql.Timestamp;
 
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -27,6 +28,7 @@ public class Order{
 	 * deliver address of this order
 	 */
 	@NotEmpty(message="You must supply a adrress")
+	@Size(max = 150, message="address should have no more than 150 characters")
 	@SpecialCharacter
 	private String address1;
 	
@@ -34,6 +36,7 @@ public class Order{
 	 * deliver address of this order
 	 */
 	@NotEmpty(message="You must supply a adrress")
+	@Size(max = 150, message="address should have no more than 150 characters")
 	@SpecialCharacter
 	private String address2;
 	
@@ -41,6 +44,7 @@ public class Order{
 	 * deliver city of this order
 	 */
 	@NotEmpty(message="You must identify a destination city")
+	@Size(max = 100,message="city name should have no more than 150 characters")
 	@SpecialCharacter
 	private String city;
 
