@@ -10,24 +10,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import model.Cart;
 import model.CartItem;
 import model.Order;
 import model.Product;
 
 /**
- * Mysql implemenataion of IOrderDao service
+ * Mysql implementation of IOrderDao service
  * @author Barry
  *
  */
 public class OrderDao implements IOrderDao{
 
-	private DataSource ds;
+	private ConnectionPool pool=ConnectionPool.getInstance();
 
 	private String getOrderByIdSQL = "SELECT id,address1,address2,city,shippingCost,totalCost,state,user from simple_order where id = ?",
 			getOrderDetailByIdSQL = "SELECT t1.id as itemId,t1.order_id,t1.quantity,t1.product,t.id as id,t.address1,t.address2,t.city,t.shippingCost,t.totalCost,t.state,t.user,t.created_time FROM simple_order_item t1 right join simple_order t on(t1.order_id=t.id) where t.id=?",
@@ -42,22 +37,12 @@ public class OrderDao implements IOrderDao{
 	
 	public OrderDao(){
 		super();
-		try{
-			Context initCtx = new InitialContext();
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			// Look up our data source
-			ds = (DataSource) envCtx.lookup("jdbc/ShoppingCart");			
-		}catch (NamingException e){
-			System.out.println("cannot find database");
-		}catch (Exception e){
-			System.out.println(e.getMessage());
-		}
 	}
 	
 	public List<Order> getUserOrders(String user){
 		Connection conn=null;PreparedStatement ps=null;ResultSet rs=null;List<Order> orders=null;
 		try {
-			conn = ds.getConnection();
+			conn = pool.getConnection();
 			ps=conn.prepareStatement(getOrdersByUserSQL);
 			ps.setString(1,user);
 			rs=ps.executeQuery();
@@ -82,7 +67,7 @@ public class OrderDao implements IOrderDao{
 					ps.close();
 				}
 				if (conn!=null) {
-					conn.close();
+					pool.freeConnection(conn);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -95,7 +80,7 @@ public class OrderDao implements IOrderDao{
 		Connection conn=null;PreparedStatement ps=null;ResultSet rs=null;Order order=null;
 		ObjectInputStream oips = null;
 		try {
-			conn = ds.getConnection();
+			conn = pool.getConnection();
 			ps=conn.prepareStatement(getOrderDetailByIdSQL);
 			ps.setString(1,orderId);
 			rs=ps.executeQuery();
@@ -130,7 +115,7 @@ public class OrderDao implements IOrderDao{
 					ps.close();
 				}
 				if (conn!=null) {
-					conn.close();
+					pool.freeConnection(conn);
 				}
 			} catch (SQLException | IOException e) {
 				e.printStackTrace();
@@ -142,7 +127,7 @@ public class OrderDao implements IOrderDao{
 	public void addNewOrder(Order order){
 		Connection conn=null;PreparedStatement ps=null;PreparedStatement ps2=null;
 		try {
-			conn = ds.getConnection();
+			conn = pool.getConnection();
 			ps=conn.prepareStatement(insertOrderSQL);
 			conn.setAutoCommit(false);
 			String orderId=order.getId();
@@ -174,7 +159,7 @@ public class OrderDao implements IOrderDao{
 					ps.close();
 				}
 				if (conn!=null) {
-					conn.close();
+					pool.freeConnection(conn);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -185,7 +170,7 @@ public class OrderDao implements IOrderDao{
 	public void modifyOrder(Order order){
 		Connection conn=null;PreparedStatement ps=null;PreparedStatement ps2=null;
 		try {
-			conn = ds.getConnection();
+			conn = pool.getConnection();
 			ps=conn.prepareStatement(updateOrderSQL);
 			conn.setAutoCommit(false);
 			String orderId=order.getId();
@@ -216,7 +201,7 @@ public class OrderDao implements IOrderDao{
 					ps.close();
 				}
 				if (conn!=null) {
-					conn.close();
+					pool.freeConnection(conn);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -227,7 +212,7 @@ public class OrderDao implements IOrderDao{
 	public List<Order> getAllOrders(){
 		List<Order> result=null;Connection conn=null;PreparedStatement ps=null;ResultSet rs=null;
 		try {
-			conn = ds.getConnection();
+			conn = pool.getConnection();
 			ps=conn.prepareStatement(getAllOrderSQL);
 			rs=ps.executeQuery();
 			result=new ArrayList<Order>();
@@ -251,7 +236,7 @@ public class OrderDao implements IOrderDao{
 					ps.close();
 				}
 				if (conn!=null) {
-					conn.close();
+					pool.freeConnection(conn);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -263,7 +248,7 @@ public class OrderDao implements IOrderDao{
 	public boolean updateOrderState(String orderId,String state){
 		Connection conn=null;PreparedStatement ps=null;
 		try {
-			conn = ds.getConnection();
+			conn = pool.getConnection();
 			ps=conn.prepareStatement(updateOrderState);
 			ps.setString(1,state);
 			ps.setString(2,orderId);
@@ -276,7 +261,7 @@ public class OrderDao implements IOrderDao{
 				ps.close();
 			}
 			if (conn!=null) {
-				conn.close();
+				pool.freeConnection(conn);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

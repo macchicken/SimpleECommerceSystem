@@ -4,7 +4,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 import service.RemoteServiceBridge;
-
+import dao.ConnectionPool;
 import dao.DaoFactory;
 import service.flk.PhotoQuerySearch;
 
@@ -30,6 +30,7 @@ public class InitSystem extends HttpServlet {
 		super.init();
 		System.out.println("start to load singleton bean in the simple e-comerce system");
 //		CalculateSetting.getInstance();
+		ConnectionPool.getInstance();
 		PhotoQuerySearch.getInstance();
 		RemoteServiceBridge.getInstance();
 		DaoFactory.getInstance();
