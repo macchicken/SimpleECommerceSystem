@@ -12,7 +12,7 @@
 <title>Products Pages</title>
 </head>
 <body>
-<sec:authorize access="hasRole('ROLE_ADMIN')">
+<sec:authorize access="hasRole('ADMIN')">
 		<p><a id="oadmin" href="admin"> view all orders</a></p>
 </sec:authorize>
 <sec:authorize access="hasRole('USER')">
