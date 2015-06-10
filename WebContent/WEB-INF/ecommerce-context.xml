@@ -37,13 +37,18 @@
     </security:http>
 
     <security:authentication-manager>
-        <security:authentication-provider>  
+        <security:authentication-provider>
+        	<security:password-encoder ref="encoder" />
             <security:user-service>
-				<security:user name="barry" password="123" authorities="ROLE_USER" />
-				<security:user name="daisy" password="123" authorities="ROLE_USER" />
-				<security:user name="lan" password="123" authorities="ROLE_ADMIN" />
+				<security:user name="barry" password="$2a$10$E7rvIYeCGfBFYm4AuoGstO4Rv8n5lAbD2pZ1cGTQVMuhmYM/U/KDO" authorities="ROLE_USER" />
+				<security:user name="daisy" password="$2a$10$E7rvIYeCGfBFYm4AuoGstO4Rv8n5lAbD2pZ1cGTQVMuhmYM/U/KDO" authorities="ROLE_USER" />
+				<security:user name="lan" password="$2a$10$E7rvIYeCGfBFYm4AuoGstO4Rv8n5lAbD2pZ1cGTQVMuhmYM/U/KDO" authorities="ROLE_ADMIN" />
 			</security:user-service>  
         </security:authentication-provider>  
-    </security:authentication-manager>  
+    </security:authentication-manager>
+
+    <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+  		<constructor-arg name="strength" value="10" />
+  	</bean>
    
 </beans>

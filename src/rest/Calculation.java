@@ -66,7 +66,7 @@ public class Calculation {
 			result.put("deliver", deliverC);
 			double totalF=perItemC*items+deliverC;
 			result.put("total", totalF);
-			System.out.print("the shipping fee for order "+id+" is: $"+totalF);
+			System.out.println("the shipping fee for order "+id+" is: $"+totalF);
 		}
 		mess.setResult(result);
 		return mess;
