@@ -7,7 +7,13 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-
+/**
+ * a singleton pool holding the DataSource
+ * 
+ * @author Barry
+ * @version 1.0
+ * @since 27/06/2015
+ */
 public class ConnectionPool {
 
 	 private static DataSource ds = null;
@@ -23,7 +29,7 @@ public class ConnectionPool {
 		}
 	}
 
-	 private static class ConnectionPoolHolder{
+	private static class ConnectionPoolHolder{
 			private static final ConnectionPool INSTANCE=new ConnectionPool();
 	}
 	 
@@ -31,6 +37,11 @@ public class ConnectionPool {
 		return ConnectionPoolHolder.INSTANCE;
 	}
 
+	/**
+	 * retrieve a connection in the datasource pool
+	 * 
+	 * @return Connection - return a connection in the datasource pool
+	 */
 	public Connection getConnection() {
 		try {
 			return ds.getConnection();
@@ -40,6 +51,11 @@ public class ConnectionPool {
 		}
 	}
 
+	/**
+	 * close a connection
+	 * 
+	 * @param conn - a database connection
+	 */
 	public void freeConnection(Connection conn) {
 		try {
 			conn.close();

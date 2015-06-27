@@ -10,13 +10,14 @@ package commons;
 public class Tools {
 
 	/**
-	 * return an ulr of original image from an url of small size image
-	 * @param url
-	 * @return
+	 * product an ulr of original image from an url of small size image
+	 * @param url - an url of small size image
+	 * @return String - return an ulr of original image from an url of small size imag
 	 */
 	public static String transferImgUrl(String url){
 		int lasti=url.lastIndexOf(".");
 		int length=url.length();
 		return url.substring(0, lasti-2)+url.substring(lasti, length);
 	}
+
 }

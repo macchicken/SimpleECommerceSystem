@@ -1,5 +1,5 @@
 /**
- * 
+ * data object accessing module
  */
 /**
  * @author Barry

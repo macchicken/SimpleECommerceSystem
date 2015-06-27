@@ -47,10 +47,10 @@ public class CalculateSetting {
 	}
 	
 	/**
-	 * Return a string of per item shipping cost and delivery cost of a city
-	 * 
-	 * @param city
-	 * @return
+	 * retrieve a string of per item shipping cost and delivery cost of a city
+	 * from memory cache map
+	 * @param city - the name of delivering city
+	 * @return String - a string of per item shipping cost and delivery cost of a city
 	 */
 	public String getCost(String city){
 		if (StringUtils.isNullOrEmpty(city)){return null;}

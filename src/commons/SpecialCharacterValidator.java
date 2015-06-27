@@ -26,13 +26,14 @@ public class SpecialCharacterValidator implements ConstraintValidator<SpecialCha
 	 */
 	@Override
 	public void initialize(SpecialCharacter arg0){
-		specialCP=Pattern.compile("[~#^$@.¡£%&!*]+");
+		specialCP=Pattern.compile("\\s*[~#^$@.¡£%&!*]+\\s*");
 	}
 	
 	/**
 	 * checking procedure of this validator
-	 * @param str	a string to be checked
+	 * @param str - a string to be checked
 	 * @param arg1
+	 * @return boolean - return true if valid
 	 */
 	@Override
 	public boolean isValid(String str,ConstraintValidatorContext arg1){

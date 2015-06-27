@@ -55,8 +55,8 @@ public class RemoteServiceBridge {
 	
 	/**
 	 * call the remote calculating service
-	 * @param order
-	 * @return
+	 * @param order - an instance of Order
+	 * @return RestMessage - response message from rest service
 	 * @see Order
 	 */
 	public RestMessage calculate(Order order){

@@ -52,7 +52,7 @@ public class CartAjaxController {
 	/**
 	 * initialize a cart while it is null
 	 * @see Cart
-	 * @return
+	 * @return - a new instance of Cart 
 	 */
 	@ModelAttribute("cart")
 	public Cart createCart(){
@@ -62,7 +62,7 @@ public class CartAjaxController {
 	/**
 	 * initialize a order while it is null
 	 * @see Order
-	 * @return
+	 * @return - a new instance of Order
 	 */
 	@ModelAttribute("order")
 	public Order createOrder(){
@@ -71,10 +71,10 @@ public class CartAjaxController {
 	
 	/**
 	 * load a partical page of displaying the cart
-	 * @param model
-	 * @param cart
+	 * @param model - spring model pass to frontController
+	 * @param cart - a cart instance in the spring model
 	 * @see Cart
-	 * @return
+	 * @return view page name - cart_partial
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadCart(Model model, @ModelAttribute("cart") Cart cart){
@@ -83,12 +83,12 @@ public class CartAjaxController {
 
 	/**
 	 * Add a product to the shopping cart
-	 * @param productId
-	 * @param model
-	 * @param cart
-	 * @param sesison
+	 * @param productId - unique id for a product
+	 * @param model - spring model pass to frontController
+	 * @param cart - a cart instance in the spring model
+	 * @param sesison - spring http session
 	 * @see Cart
-	 * @return
+	 * @return view page name - cart_partial
 	 */
 	@RequestMapping("/add/{productId}")
 	public String add(@PathVariable String productId, Model model, @ModelAttribute("cart") Cart cart,HttpSession sesison){
@@ -100,12 +100,12 @@ public class CartAjaxController {
 
 	/**
 	 * decrease the quantity of the product in the cart
-	 * @param productId
-	 * @param model
-	 * @param cart
-	 * @param sesison
+	 * @param productId - unique id for a product
+	 * @param model - spring model pass to frontController
+	 * @param cart - a cart instance in the spring model
+	 * @param sesison - spring http session
 	 * @see Cart
-	 * @return
+	 * @return view page name - cart_partial
 	 */
 	@RequestMapping("/remove/{productId}")
 	public String remove(@PathVariable String productId, Model model,@ModelAttribute("cart") Cart cart,HttpSession sesison){
@@ -117,6 +117,13 @@ public class CartAjaxController {
 		return "cart_partial";
 	}
 	
+	/**
+	 * proceed to checkout page
+	 * @param model - spring model pass to frontController
+	 * @param cart - a cart instance in the spring model
+	 * @param order - a order instance in the spring model
+	 * @return view page name - checkout
+	 */
 	@RequestMapping("/checkout")
 	public String checkout(Model model,@ModelAttribute("cart") Cart cart,@ModelAttribute("order") Order order){
 		return "checkout";
@@ -124,13 +131,13 @@ public class CartAjaxController {
 
 	/**
 	 * Discard this order before submit to checkout
-	 * @param model
-	 * @param cart
-	 * @param order
-	 * @param sessionStatus
+	 * @param model - spring model pass to frontController
+	 * @param cart - a cart instance in the spring model
+	 * @param order - a order instance in the spring model
+	 * @param sessionStatus - state of spring http session
 	 * @see Cart
 	 * @see Order
-	 * @return
+	 * @return view page name - messagePage
 	 */
 	@RequestMapping("/discard")
 	public String disCard(Model model,@ModelAttribute("cart") Cart cart,@ModelAttribute("order") Order order,SessionStatus sessionStatus){
@@ -141,15 +148,15 @@ public class CartAjaxController {
 
 	/**
 	 * checkout this order with extra detail of this order
-	 * @param model
-	 * @param cart
-	 * @param order
-	 * @param result
-	 * @param sessionStatus
-	 * @param sesison
+	 * @param model - spring model pass to frontController
+	 * @param cart - a cart instance in the spring model
+	 * @param order - a order instance in the spring model
+	 * @param result validation result object relate to objects with Valid annotation
+	 * @param sessionStatus - state of spring http session
+	 * @param sesison - spring http session
 	 * @see Cart
 	 * @see Order
-	 * @return
+	 * @return view page name - checkout if validation is not passed, else messagePage
 	 */
 	@RequestMapping(value="/complete",method = RequestMethod.GET)
 	public String complete(Model model,@ModelAttribute("cart") Cart cart,@Valid @ModelAttribute("order") Order order,BindingResult result, SessionStatus sessionStatus,HttpSession sesison){

@@ -32,8 +32,8 @@ public class AdminController {
 	
 	/**
 	 * load all orders from data source
-	 * @param model
-	 * @return
+	 * @param model - spring model pass to frontController
+	 * @return view_order - view page name
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadCart(Model model){
@@ -44,9 +44,9 @@ public class AdminController {
 
 	/**
 	 * update the state of an order to shipped
-	 * @param orderId
-	 * @param model
-	 * @return
+	 * @param orderId - unique id of an order
+	 * @param model - spring model pass to frontController
+	 * @return messagePage - view page name
 	 */
 	@RequestMapping(value="/update/{orderId}",method = RequestMethod.GET)
 	public String updateState(@PathVariable String orderId,Model model){

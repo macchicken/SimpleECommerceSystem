@@ -41,9 +41,9 @@ public class ProductController {
 
 	/**
 	 * retreiving products with default search key word
-	 * @param model
-	 * @param session
-	 * @return
+	 * @param model - spring model pass to frontController
+	 * @param session - spring http session
+	 * @return view page name - productlist
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String listAll(Model model,HttpSession session){
@@ -63,10 +63,10 @@ public class ProductController {
 
 	/**
 	 * retreiving products with a search key word
-	 * @param keyword	search key word
-	 * @param model
-	 * @param session
-	 * @return
+	 * @param keyword - search key word
+	 * @param model - spring model pass to frontController
+	 * @param session - spring http session
+	 * @return view page name - productlist
 	 */
 	@RequestMapping(value="/search",method = RequestMethod.GET)
 	public String searchProducts(@RequestParam(value="keyword", required=false, defaultValue="") String keyword,Model model,HttpSession session){

@@ -14,13 +14,13 @@ public interface IOrderDao {
 	/**
 	 * Return a list of order from an user
 	 * @param user
-	 * @return
+	 * @return list of orders
 	 */
 	public List<Order> getUserOrders(String user);
 	/**
 	 * Return details of an order
 	 * @param orderId	id of an order
-	 * @return
+	 * @return an intance of Order
 	 */
 	public Order getOrderDetail(String orderId);
 	/**
@@ -37,7 +37,7 @@ public interface IOrderDao {
 	public void modifyOrder(Order order);
 	/**
 	 * retrieve all orders
-	 * @return
+	 * @return list of orders
 	 * @see Order
 	 */
 	public List<Order> getAllOrders();
@@ -45,7 +45,7 @@ public interface IOrderDao {
 	 * update state of an order
 	 * @param orderId
 	 * @param state
-	 * @return
+	 * @return boolean - success flag
 	 */
 	public boolean updateOrderState(String orderId,String state);
 

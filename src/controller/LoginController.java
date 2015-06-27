@@ -23,8 +23,8 @@ public class LoginController {
 
 	/**
 	 * to login page
-	 * @param model
-	 * @return
+	 * @param model - spring model pass to frontController
+	 * @return view page name - login
 	 */
 	@RequestMapping("/login")
     public String login(Model model) {
@@ -33,8 +33,8 @@ public class LoginController {
 
 	/**
 	 * to login error page
-	 * @param model
-	 * @return
+	 * @param model - spring model pass to frontController
+	 * @return view page name - loginError
 	 */
 	@RequestMapping("/loginError")
     public String loginError(Model model) {
@@ -43,8 +43,8 @@ public class LoginController {
 
 	/**
 	 * logout process
-	 * @param model
-	 * @return
+	 * @param model - spring model pass to frontController
+	 * @return view page name - login
 	 */
 	@RequestMapping("/logout")
 	public String logout(Model model) {
@@ -53,8 +53,8 @@ public class LoginController {
 
 	/**
 	 * to main page after login successfully and store the user information in the session
-	 * @param model
-	 * @return
+	 * @param model - spring model pass to frontController
+	 * @return view page name - mainPage
 	 */
 	@RequestMapping("/eco/mainPage")
 	public String simplePage(Model model) {

@@ -39,8 +39,8 @@ public class PhotoQuerySearch {
 	
 	/**
 	 * search photos with key words
-	 * @param keywords
-	 * @return
+	 * @param keywords - keywords would be sent to flikr in the tags field
+	 * @return List<Product> - list of photos from flickr
 	 * @see Product
 	 */
 	public List<Product> getProducts(String keywords){		

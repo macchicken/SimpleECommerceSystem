@@ -53,9 +53,9 @@ public class OrderController {
 
 	/**
 	 * retrieve orders from current login user
-	 * @param model
-	 * @param session
-	 * @return
+	 * @param model - spring model pass to frontController
+	 * @param session - spring http session
+	 * @return view page name - view_order
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String loadOrders(Model model,HttpSession session){
@@ -67,9 +67,9 @@ public class OrderController {
 
 	/**
 	 * retrieve the details of an order
-	 * @param orderId
-	 * @param model
-	 * @return
+	 * @param orderId - unique id of an order
+	 * @param model - spring model pass to frontController
+	 * @return view page name - order_detail
 	 */
 	@RequestMapping(value="/detail/{orderId}",method = RequestMethod.GET)
 	public String getOrder(@PathVariable String orderId,Model model){
@@ -81,11 +81,11 @@ public class OrderController {
 
 	/**
 	 * increase the quantity of an item in the order
-	 * @param productId
-	 * @param model
-	 * @param order
+	 * @param productId - unique id of a product
+	 * @param model - spring model pass to frontController
+	 * @param order - a order instance in the spring model
 	 * @see Order
-	 * @return
+	 * @return view page name - cart_partial
 	 */
 	@RequestMapping(value="/addItem/{productId}",method = RequestMethod.GET)
 	public String addItem(@PathVariable String productId,Model model,@ModelAttribute("morder") Order order){
@@ -98,11 +98,11 @@ public class OrderController {
 
 	/**
 	 * decrease the quantity of an item in the order
-	 * @param productId
-	 * @param model
-	 * @param order
+	 * @param productId - unique id of a product
+	 * @param model - spring model pass to frontController
+	 * @param order - a order instance in the spring model
 	 * @see Order
-	 * @return
+	 * @return view page name - cart_partial
 	 */
 	@RequestMapping(value="/removeItem/{productId}",method = RequestMethod.GET)
 	public String removeItem(@PathVariable String productId,Model model,@ModelAttribute("morder") Order order){
@@ -114,12 +114,12 @@ public class OrderController {
 
 	/**
 	 * process the modification of this order
-	 * @param model
-	 * @param order
-	 * @param result
-	 * @param sessionStatus
+	 * @param model - spring model pass to frontController
+	 * @param order - a order instance in the spring model
+	 * @param result - validation result object relate to objects with Valid annotation
+	 * @param sessionStatus - spring http session
 	 * @see Order
-	 * @return
+	 * @return view page name view page name - order_cartholder if validation is not passed, else messagePage
 	 */
 	@RequestMapping(value="/complete",method = RequestMethod.GET)
 	public String completeOrder(Model model,@Valid @ModelAttribute("morder") Order order,BindingResult result,SessionStatus sessionStatus){
