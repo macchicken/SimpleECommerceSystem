@@ -34,4 +34,10 @@ public interface Constants {
 	 * base priec of a photo
 	 */
 	public static final double basePrice=2;
+	
+	/**
+	 * maximum page of retrieving photos from Flickr
+	 */
+	public static final int maxPage=10;
+
 }

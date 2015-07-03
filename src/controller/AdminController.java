@@ -36,7 +36,7 @@ public class AdminController {
 	 * @return view_order - view page name
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String loadCart(Model model){
+	public String loadOrders(Model model){
 		List<Order> result=odao.getAllOrders();
 		model.addAttribute("orders", result);
 		return "view_order";
@@ -51,7 +51,11 @@ public class AdminController {
 	@RequestMapping(value="/update/{orderId}",method = RequestMethod.GET)
 	public String updateState(@PathVariable String orderId,Model model){
 		boolean success=odao.updateOrderState(orderId, "shipped");
-		model.addAttribute("success", "order "+orderId+" has been shipped");
+		if (success) {
+			model.addAttribute("success", "order " + orderId+ " has been shipped");
+		}else{
+			model.addAttribute("success", "order " + orderId+ " failed to update");
+		}
 		return "messagePage";
 	}
 

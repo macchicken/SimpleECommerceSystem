@@ -32,7 +32,7 @@ public class DaoFactory {
 
 	/**
 	 * Return a service interface of order dao service
-	 * @return
+	 * @return IOrderDao - an orderdao interface
 	 */
 	public IOrderDao getOrderDao() {
 		return odao;

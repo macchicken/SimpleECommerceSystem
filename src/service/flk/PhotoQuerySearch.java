@@ -8,8 +8,10 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import model.Product;
+import model.Products;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -27,11 +29,19 @@ import commons.Tools;
  */
 public class PhotoQuerySearch {
 	
+	private static DocumentBuilder db;
+
 	private static class PhotoQuerySearchHolder{
 		private static final PhotoQuerySearch INSTANCE=new PhotoQuerySearch();
+		
 	}
 	
-	private PhotoQuerySearch(){}
+	private PhotoQuerySearch(){
+		try {
+			db=DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	} catch (ParserConfigurationException e) {
+		e.printStackTrace();
+	}}
 	
 	public static PhotoQuerySearch getInstance(){
 		return PhotoQuerySearchHolder.INSTANCE;
@@ -40,29 +50,35 @@ public class PhotoQuerySearch {
 	/**
 	 * search photos with key words
 	 * @param keywords - keywords would be sent to flikr in the tags field
-	 * @return List<Product> - list of photos from flickr
-	 * @see Product
+	 * @return Products - list of photos from flickr
+	 * @see Products
 	 */
-	public List<Product> getProducts(String keywords){		
+	public Products getProducts(String keywords,String pageNumber){		
 		HttpURLConnection urlConnection=null;InputStream urlStream=null;
 		try{
 			String callUrlStr = Constants.REST_ENDPOINT+"?method="+Constants.METHODSEARCH+
-			"&format=rest"+"&per_page="+Constants.DEFAULT_NUMBER+"&api_key="+Constants.API_KEY+"&extras=tags,url_sq&tags="+keywords;
+			"&format=rest"+"&per_page="+Constants.DEFAULT_NUMBER+"&page="+pageNumber+"&api_key="+Constants.API_KEY+"&extras=tags,url_sq&tags="+keywords;
 			System.out.println(callUrlStr);
 			URL callUrl = new URL(callUrlStr);			
 			urlConnection = (HttpURLConnection)callUrl.openConnection();
 			urlStream = urlConnection.getInputStream();
-		
-			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document response = db.parse(urlStream);
-			NodeList nl = response.getElementsByTagName("photo");
+			NodeList nl=response.getElementsByTagName("rsp");
+			String state=nl.item(0).getAttributes().getNamedItem("stat").getTextContent();
+			if (!"ok".equals(state)){return new Products(0,0,keywords,null);}
+			nl=response.getElementsByTagName("photos");
+			String rPages=nl.item(0).getAttributes().getNamedItem("pages").getTextContent();
+			int totalPage=0;int tPages=Integer.parseInt(rPages); 
+			if (tPages<Constants.maxPage){totalPage=tPages;}
+			else{totalPage=Constants.maxPage;}
+			int currentPage=Integer.parseInt(nl.item(0).getAttributes().getNamedItem("page").getTextContent());
+			nl = response.getElementsByTagName("photo");
 			int total=nl.getLength();
 			if (total==0){return null;}
 			List<Product> result=new ArrayList<Product>();
-			NamedNodeMap temp;
 			String[] tagsl=null;
 			for (int i = 0; i < total; i ++){
-				temp=nl.item(i).getAttributes();
+				NamedNodeMap temp=nl.item(i).getAttributes();
 				String title=temp.getNamedItem("title").getTextContent();
 				String tags=temp.getNamedItem("tags").getTextContent();
 				String urlSq=temp.getNamedItem("url_sq").getTextContent();
@@ -73,7 +89,8 @@ public class PhotoQuerySearch {
 				t.setOriginImg(urlO);
 				result.add(t);
 			}
-			return result;
+			Products products=new Products(totalPage,currentPage,keywords,result);
+			return products;
 		}catch (Exception e){
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -89,7 +106,7 @@ public class PhotoQuerySearch {
 				urlConnection.disconnect();
 			}
 		}
-		return null;
+		return new Products(0,0,keywords,null);
 	}
 
 	
