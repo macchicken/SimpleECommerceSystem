@@ -10,8 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import model.Cart;
 import model.CartItem;
+import model.PageModel;
 import model.Product;
-import model.Products;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +31,7 @@ import service.flk.PhotoQuerySearch;
  */
 @Controller
 @RequestMapping("/eco/products")
-@SessionAttributes("sproducts")
+@SessionAttributes({"sproducts","searchKeywords"})
 public class ProductController {
 
 	/**
@@ -48,8 +48,8 @@ public class ProductController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String listAll(Model model,HttpSession session){
-		Products products=qs.getProducts("tiger","1");
-		List<Product> result=products.getProList();
+		PageModel<Product> products=qs.getProducts("tiger","1");
+		List<Product> result=products.getElementList();
 		Map<String,Product> sproducts=new HashMap<String,Product>();
 		for (Product p:result){
 			sproducts.put(p.getProductId(), p);
@@ -70,63 +70,92 @@ public class ProductController {
 	 * @param continued - a flag for indicating its searching is continuing for next page
 	 * @param model - spring model pass to frontController
 	 * @param session - spring http session
-	 * @return view page name - productlist
+	 * @return view page name - productlist or productCatalogue
 	 */
 	@RequestMapping(value="/search",method = RequestMethod.GET)
 	public String searchProducts(
-			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+			@RequestParam(value = "keyword", required = false, defaultValue = "tiger") String keyword,
 			@RequestParam(value = "pageNumber", required = false, defaultValue = "1") String pageNumber,
 			@RequestParam(value = "continued", required = false, defaultValue = "false") String continued,
 			Model model, HttpSession session) {
-		System.out.println("search keyword "+keyword);
+		String viewName=null;
 		Cart c=(Cart) session.getAttribute("cart");
 		List<Product> result=null;
-		Products products=null;
-		boolean needSearch=true;
-		if ("".equals(keyword.trim())){
-			keyword="tiger";
-			if (c!=null&&c.getTotalItem()!=0){
-				needSearch=false;
-			}
+		PageModel<Product> products=null;
+		if ("true".equals(continued)){
+			viewName="productCatalogue";
+			keyword=(String) session.getAttribute("searchKeywords");
 		}else{
+			viewName="productlist";
 			try {
 				keyword=new String(keyword.getBytes("ISO-8859-1"), "GBK");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
+			model.addAttribute("searchKeywords",keyword);
 		}
-		if (needSearch){
-			products=qs.getProducts(keyword,pageNumber);
-			result=products.getProList();
-			Map<String,Product> sproducts=new HashMap<String,Product>();
-			if (result!=null) {
-				for (Product p : result) {
-					sproducts.put(p.getProductId(), p);
-				}
+		System.out.println("search keyword "+keyword);
+		products=qs.getProducts(keyword,pageNumber);
+		result=products.getElementList();
+		Map<String,Product> sproducts=new HashMap<String,Product>();
+		if (result!=null) {
+			for (Product p : result) {
+				sproducts.put(p.getProductId(), p);
 			}
-			model.addAttribute("sproducts", sproducts);
-		}else{
-			result=new ArrayList<Product>();
-			int perPage=Integer.parseInt(commons.Constants.DEFAULT_NUMBER);
-			int totalPage=c.getItems().size()/perPage;
-			if (c.getItems().size()%perPage!=0){totalPage=totalPage+1;}
-			int currentPage=Integer.parseInt(pageNumber)-1;
-			int count=0;
-			for (CartItem ci:c.getItems()){
-				if ((count/perPage)==currentPage){
-					result.add(ci.getProduct());}
-				if (result.size()==perPage){break;}
-				count++;
-			}
-			currentPage=currentPage+1;
-			products=new Products(totalPage,currentPage,"",result);
 		}
+		model.addAttribute("sproducts", sproducts);
 		model.addAttribute("products",products);
 		if (c!=null){
 			model.addAttribute("cart", c);
 		}
-		if ("true".equals(continued)){return "productCatalogue";}
-		else{return "productlist";}
+		model.addAttribute("searchFlag","prod");
+		return viewName;
+	}
+	
+	/**
+	 * retreiving products from the shopping cart
+	 * @param pageNumber - desired search page number
+	 * @param continued - a flag for indicating its searching is continuing for next page
+	 * @param model - spring model pass to frontController
+	 * @param session - spring http session
+	 * @return view page name - productlist or productCatalogue
+	 */
+	@RequestMapping(value="/search/cart",method = RequestMethod.GET)
+	public String searchCartItems(
+			@RequestParam(value = "pageNumber", required = false, defaultValue = "1") String pageNumber,
+			@RequestParam(value = "continued", required = false, defaultValue = "false") String continued,
+			Model model, HttpSession session) {
+		String viewName=null;
+		Cart c=(Cart) session.getAttribute("cart");
+		List<Product> result=new ArrayList<Product>();
+		PageModel<Product> products=null;
+		if ("true".equals(continued)){
+			viewName="productCatalogue";
+		}else{
+			viewName="productlist";
+		}
+		if (c==null){
+			products=new PageModel<Product>(0,0,result);
+			model.addAttribute("products",products);
+			return viewName;
+		}
+		int perPage=Integer.parseInt(commons.Constants.DEFAULT_NUMBER);
+		int totalPage=c.getItems().size()/perPage;
+		if (c.getItems().size()%perPage!=0){totalPage=totalPage+1;}
+		int currentPage=Integer.parseInt(pageNumber)-1;
+		int count=0;
+		for (CartItem ci:c.getItems()){
+			if ((count/perPage)==currentPage){
+				result.add(ci.getProduct());}
+			if (result.size()==perPage){break;}
+			count++;
+		}
+		currentPage=currentPage+1;
+		products=new PageModel<Product>(totalPage,currentPage,result);
+		model.addAttribute("products",products);
+		model.addAttribute("cart", c);
+		model.addAttribute("searchFlag","cartitems");
+		return viewName;
 	}
 	
 }

@@ -1,8 +1,8 @@
 package dao;
 
-import java.util.List;
 
 import model.Order;
+import model.PageModel;
 
 /**
  * interface of order dao service
@@ -13,40 +13,47 @@ public interface IOrderDao {
 
 	/**
 	 * Return a list of order from an user
-	 * @param user
+	 * @param user - user name
+	 * @param pageNumber - desired page number
 	 * @return list of orders
+	 * @see Order
+	 * @see PageModel
 	 */
-	public List<Order> getUserOrders(String user);
+	public PageModel<Order> getUserOrders(String user,String pageNumber);
 	/**
 	 * Return details of an order
-	 * @param orderId	id of an order
+	 * @param orderId - id of an order
+	 * @param pageIndex - id of an order with in a page
 	 * @return an intance of Order
 	 */
-	public Order getOrderDetail(String orderId);
+	public Order getOrderDetail(String orderId,String pageIndex);
 	/**
-	 * save an order
-	 * @param order
+	 * save information of an order
+	 * @param order - an instance of Order
 	 * @see Order
 	 */
 	public void addNewOrder(Order order);
 	/**
-	 * modify an order
-	 * @param order
+	 * modify information of an order
+	 * @param order - an instance of Order
 	 * @see Order
 	 */
 	public void modifyOrder(Order order);
 	/**
-	 * retrieve all orders
+	 * retrieve all orders by pages
+	 * @param pageNumber - desired page number 
 	 * @return list of orders
 	 * @see Order
+	 * @see PageModel
 	 */
-	public List<Order> getAllOrders();
+	public PageModel<Order> getAllOrders(String pageNumber);
 	/**
 	 * update state of an order
-	 * @param orderId
-	 * @param state
+	 * @param orderId - id of an order
+	 * @param pageIndex - id of an order with in a page
+	 * @param state - state of an order
 	 * @return boolean - success flag
 	 */
-	public boolean updateOrderState(String orderId,String state);
+	public boolean updateOrderState(String orderId,String pageIndex,String state);
 
 }

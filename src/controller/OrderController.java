@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -9,6 +8,7 @@ import javax.validation.Valid;
 import model.Cart;
 import model.CartItem;
 import model.Order;
+import model.PageModel;
 import model.Product;
 import model.RestMessage;
 import model.SimpleUser;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -52,16 +53,17 @@ public class OrderController {
 
 
 	/**
-	 * retrieve orders from current login user
+	 * retrieve orders of current login user
 	 * @param model - spring model pass to frontController
 	 * @param session - spring http session
 	 * @return view page name - view_order
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String loadOrders(Model model,HttpSession session){
-		SimpleUser user=(SimpleUser) session.getAttribute("currentUser");
-		List<Order> result=odao.getUserOrders(user.getName());
-		model.addAttribute("orders",result);
+	public String loadOrders(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") String pageNumber,
+			Model model, HttpSession session) {
+		SimpleUser user = (SimpleUser) session.getAttribute("currentUser");
+		PageModel<Order> result = odao.getUserOrders(user.getName(),pageNumber);
+		model.addAttribute("orders", result);
 		return "view_order";
 	}
 
@@ -72,8 +74,8 @@ public class OrderController {
 	 * @return view page name - order_detail
 	 */
 	@RequestMapping(value="/detail/{orderId}",method = RequestMethod.GET)
-	public String getOrder(@PathVariable String orderId,Model model){
-		Order order=odao.getOrderDetail(orderId);
+	public String getOrder(@PathVariable String orderId,@RequestParam(value = "pageIndex",required = true) String pageIndex,Model model){
+		Order order=odao.getOrderDetail(orderId,pageIndex);
 		model.addAttribute("morder",order);
 		model.addAttribute("cart",order.getCart());
 		return "order_detail";
@@ -117,9 +119,9 @@ public class OrderController {
 	 * @param model - spring model pass to frontController
 	 * @param order - a order instance in the spring model
 	 * @param result - validation result object relate to objects with Valid annotation
-	 * @param sessionStatus - spring http session
+	 * @param sessionStatus - spring http session status
 	 * @see Order
-	 * @return view page name view page name - order_cartholder if validation is not passed, else messagePage
+	 * @return view page name - order_cartholder if validation is not passed, else messagePage
 	 */
 	@RequestMapping(value="/complete",method = RequestMethod.GET)
 	public String completeOrder(Model model,@Valid @ModelAttribute("morder") Order order,BindingResult result,SessionStatus sessionStatus){
@@ -141,7 +143,7 @@ public class OrderController {
 		order.setTotalCost(shippingCost+cart.getTotal());
 		String success=transform(cart);
 		success+="<p>order "+order.getId()+" is processing to "+order.getCity()+", shipping cost is $"+shippingCost+" final cost is $"+order.getTotalCost()+"</p>";
-		model.addAttribute("success", success);
+		model.addAttribute("messageContent", success);
 		odao.modifyOrder(order);
 		sessionStatus.setComplete();
 		return "messagePage";

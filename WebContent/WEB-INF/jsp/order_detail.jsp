@@ -10,7 +10,6 @@
 <title>Order details</title>
 </head>
 <body>
-<div id="wrap">
 
 <div id="header"></div>
 
@@ -18,7 +17,10 @@
 <table border = "1">
 <thead>
 <tr>
-<th>Title</th><th>Description</th><th>Price</th><th>icon</th><th>Action</th>
+<th>Title</th><th>Description</th><th>Price</th><th>Icon</th>
+<c:if test="${morder.state=='processing'}">
+<th>Action</th>
+</c:if>
 </tr>
 </thead>
 <tbody>
@@ -31,12 +33,12 @@
                 <td>
                 <img src="${oitem.product.imageUrl}" alt="image not available">
                 </td>
-                <td>
                 <c:if test="${morder.state=='processing'}">
+                <td>
 	                <a href="${pageContext.request.contextPath}/eco/orders/addItem/${oitem.product.productId}" class="add">add</a>
 	                <a href="${pageContext.request.contextPath}/eco/orders/removeItem/${oitem.product.productId}" class="remove" productId="${oitem.product.productId}">remove</a>
-                </c:if>
                 </td>
+                </c:if>
            </tr>
 
 </c:forEach>
@@ -46,7 +48,6 @@
 </div>
 <div id="cartholder"> 
  <jsp:include page="order_cartholder.jsp"></jsp:include>
-</div>
 </div>
 
 <script type="text/javascript">

@@ -13,6 +13,7 @@ import java.util.List;
 import model.Cart;
 import model.CartItem;
 import model.Order;
+import model.PageModel;
 import model.Product;
 
 /**
@@ -25,26 +26,31 @@ public class OrderDao implements IOrderDao{
 	private ConnectionPool pool=ConnectionPool.getInstance();
 
 	private String getOrderByIdSQL = "SELECT id,address1,address2,city,shippingCost,totalCost,state,user from simple_order where id = ?",
-			getOrderDetailByIdSQL = "SELECT t1.id as itemId,t1.order_id,t1.quantity,t1.product,t.id as id,t.address1,t.address2,t.city,t.shippingCost,t.totalCost,t.state,t.user,t.created_time FROM simple_order_item t1 right join simple_order t on(t1.order_id=t.id) where t.id=?",
-			getOrdersByUserSQL= "SELECT id,address1,address2,city,shippingCost,totalCost,state,user,created_time from simple_order where user=?",
-			getAllOrderSQL = "SELECT id,address1,address2,city,shippingCost,totalCost,state,user,created_time from simple_order",
+			getOrderDetailByIdSQL = "SELECT t1.id as itemId,t1.order_id,t1.quantity,t1.product,t.id as id,t.address1,t.address2,t.city,t.shippingCost,t.totalCost,t.state,t.user,t.created_time FROM simple_order_item t1 right join simple_order t on(t1.order_id=t.id) where t.id=? and t.autoId=?",
+			getOrdersByUserSQL= "SELECT SQL_CALC_FOUND_ROWS autoId pageindex,id,address1,address2,city,shippingCost,totalCost,state,user,created_time from simple_order where user=? and autoId<301 order by id asc limit ?,10",
+			getAllOrderSQL = "SELECT SQL_CALC_FOUND_ROWS autoId pageindex,id,address1,address2,city,shippingCost,totalCost,state,user,created_time from simple_order where autoId<301 order by user asc limit ?,10",
 			deleteOrderSQL = "DELETE from simple_order where id = ?" ,
 			insertOrderSQL = "INSERT into simple_order(id,address1,address2,city,shippingCost,totalCost,state,user) values (?,?,?,?,?,?,?,?)" ,
 			insertOrderItemSQL = "INSERT into simple_order_item(id,order_id,quantity,product) values (?,?,?,?)" ,
 			updateOrderSQL = "UPDATE simple_order set address1=?,address2=?,city=?,shippingCost=?,totalCost=?,updated_time=sysdate() where id=?",
 			updateOrderItemSql="INSERT into simple_order_item (id,order_id,quantity,product) values(?,?,?,?) ON DUPLICATE KEY UPDATE quantity=?",
-			updateOrderState="UPDATE simple_order set state=?,updated_time=sysdate() where id=?";
+			updateOrderState="UPDATE simple_order set state=?,updated_time=sysdate() where id=? and autoId=?",
+			getRoundRows="SELECT FOUND_ROWS() totalr";
 	
 	public OrderDao(){
 		super();
 	}
 	
-	public List<Order> getUserOrders(String user){
-		Connection conn=null;PreparedStatement ps=null;ResultSet rs=null;List<Order> orders=null;
+	@Override
+	public PageModel<Order> getUserOrders(String user,String pageNumber){
+		Connection conn=null;PreparedStatement ps=null,ps2=null;ResultSet rs=null,rs2=null;List<Order> orders=null;
+		int pageN=Integer.parseInt(pageNumber);int total=0;
 		try {
+			int limit=0+(pageN-1)*10;
 			conn = pool.getConnection();
 			ps=conn.prepareStatement(getOrdersByUserSQL);
 			ps.setString(1,user);
+			ps.setInt(2, limit);
 			rs=ps.executeQuery();
 			orders=new ArrayList<Order>();
 			while(rs.next()){
@@ -54,8 +60,16 @@ public class OrderDao implements IOrderDao{
 				t.setState(rs.getString("state"));
 				t.setUser(rs.getString("user"));
 				t.setCreatedTime(rs.getTimestamp("created_time"));
+				t.setPageIndex(rs.getInt("pageindex"));
 				orders.add(t);
 			}
+			ps2=conn.prepareStatement(getRoundRows);
+			rs2=ps2.executeQuery();
+			rs2.next();
+			total=rs2.getInt("totalr");
+			int tempt=total;
+			total=total/10;
+			if (tempt%10>0){total=total+1;}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
@@ -66,6 +80,12 @@ public class OrderDao implements IOrderDao{
 				if (ps!=null) {
 					ps.close();
 				}
+				if (rs2!=null) {
+					rs2.close();
+				}
+				if (ps2!=null) {
+					ps2.close();
+				}
 				if (conn!=null) {
 					pool.freeConnection(conn);
 				}
@@ -73,16 +93,19 @@ public class OrderDao implements IOrderDao{
 				e.printStackTrace();
 			}
 		}
-		return orders;
+		return new PageModel<Order>(total,pageN,orders);
 	}
 	
-	public Order getOrderDetail(String orderId){
+	@Override
+	public Order getOrderDetail(String orderId,String pageIndex){
 		Connection conn=null;PreparedStatement ps=null;ResultSet rs=null;Order order=null;
 		ObjectInputStream oips = null;
 		try {
+			int pageI=Integer.parseInt(pageIndex);
 			conn = pool.getConnection();
 			ps=conn.prepareStatement(getOrderDetailByIdSQL);
 			ps.setString(1,orderId);
+			ps.setInt(2, pageI);
 			rs=ps.executeQuery();
 			Cart cart=new Cart();
 			rs.next();
@@ -101,6 +124,7 @@ public class OrderDao implements IOrderDao{
 				cart.addItem(temp, rs.getInt("quantity"));
 			}
 			order.setCart(cart);
+			order.setPageIndex(pageI);
 		} catch (SQLException | IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}finally{
@@ -124,6 +148,7 @@ public class OrderDao implements IOrderDao{
 		return order;
 	}
 
+	@Override
 	public void addNewOrder(Order order){
 		Connection conn=null;PreparedStatement ps=null;PreparedStatement ps2=null;
 		try {
@@ -167,6 +192,7 @@ public class OrderDao implements IOrderDao{
 		}
 	}
 
+	@Override
 	public void modifyOrder(Order order){
 		Connection conn=null;PreparedStatement ps=null;PreparedStatement ps2=null;
 		try {
@@ -209,11 +235,15 @@ public class OrderDao implements IOrderDao{
 		}
 	}
 	
-	public List<Order> getAllOrders(){
-		List<Order> result=null;Connection conn=null;PreparedStatement ps=null;ResultSet rs=null;
+	@Override
+	public PageModel<Order> getAllOrders(String pageNumber){
+		List<Order> result=null;Connection conn=null;PreparedStatement ps=null,ps2=null;ResultSet rs=null,rs2=null;
+		int pageN=Integer.parseInt(pageNumber);int total=0;
 		try {
+			int limit=0+(pageN-1)*10;
 			conn = pool.getConnection();
 			ps=conn.prepareStatement(getAllOrderSQL);
+			ps.setInt(1, limit);
 			rs=ps.executeQuery();
 			result=new ArrayList<Order>();
 			while(rs.next()){
@@ -223,8 +253,16 @@ public class OrderDao implements IOrderDao{
 				temp.setState(rs.getString("state"));
 				temp.setUser(rs.getString("user"));
 				temp.setCreatedTime(rs.getTimestamp("created_time"));
+				temp.setPageIndex(rs.getInt("pageindex"));
 				result.add(temp);
 			}
+			ps2=conn.prepareStatement(getRoundRows);
+			rs2=ps2.executeQuery();
+			rs2.next();
+			total=rs2.getInt("totalr");
+			int tempt=total;
+			total=total/10;
+			if (tempt%10>0){total=total+1;}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
@@ -235,6 +273,12 @@ public class OrderDao implements IOrderDao{
 				if (ps!=null) {
 					ps.close();
 				}
+				if (rs2!=null){
+					rs2.close();
+				}
+				if (ps2!=null) {
+					ps2.close();
+				}
 				if (conn!=null) {
 					pool.freeConnection(conn);
 				}
@@ -242,16 +286,18 @@ public class OrderDao implements IOrderDao{
 				e.printStackTrace();
 			}
 		}
-		return result;
+		return new PageModel<Order>(total,pageN,result);
 	}
 
-	public boolean updateOrderState(String orderId,String state){
+	@Override
+	public boolean updateOrderState(String orderId,String pageIndex,String state){
 		Connection conn=null;PreparedStatement ps=null;
 		try {
 			conn = pool.getConnection();
 			ps=conn.prepareStatement(updateOrderState);
 			ps.setString(1,state);
 			ps.setString(2,orderId);
+			ps.setInt(3,Integer.parseInt(pageIndex));
 			int count=ps.executeUpdate();
 			if (count>0){return true;}
 		} catch (SQLException e) {

@@ -10,8 +10,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import model.PageModel;
 import model.Product;
-import model.Products;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -48,12 +48,12 @@ public class PhotoQuerySearch {
 	}
 	
 	/**
-	 * search photos with key words
-	 * @param keywords - keywords would be sent to flikr in the tags field
+	 * search photos with key words with desired page number
+	 * @param keywords - keywords would be sent to flikr in the 'tags' field
 	 * @return Products - list of photos from flickr
 	 * @see Products
 	 */
-	public Products getProducts(String keywords,String pageNumber){		
+	public PageModel<Product> getProducts(String keywords,String pageNumber){		
 		HttpURLConnection urlConnection=null;InputStream urlStream=null;
 		try{
 			String callUrlStr = Constants.REST_ENDPOINT+"?method="+Constants.METHODSEARCH+
@@ -65,7 +65,7 @@ public class PhotoQuerySearch {
 			Document response = db.parse(urlStream);
 			NodeList nl=response.getElementsByTagName("rsp");
 			String state=nl.item(0).getAttributes().getNamedItem("stat").getTextContent();
-			if (!"ok".equals(state)){return new Products(0,0,keywords,null);}
+			if (!"ok".equals(state)){return new PageModel<Product>(0,0,null);}
 			nl=response.getElementsByTagName("photos");
 			String rPages=nl.item(0).getAttributes().getNamedItem("pages").getTextContent();
 			int totalPage=0;int tPages=Integer.parseInt(rPages); 
@@ -89,11 +89,9 @@ public class PhotoQuerySearch {
 				t.setOriginImg(urlO);
 				result.add(t);
 			}
-			Products products=new Products(totalPage,currentPage,keywords,result);
-			return products;
+			return new PageModel<Product>(totalPage,currentPage,result);
 		}catch (Exception e){
 			e.printStackTrace();
-			System.out.println(e.getMessage());
 		}finally{
 			if (urlStream!=null){
 				try {
@@ -106,7 +104,7 @@ public class PhotoQuerySearch {
 				urlConnection.disconnect();
 			}
 		}
-		return new Products(0,0,keywords,null);
+		return new PageModel<Product>(0,0,null);
 	}
 
 	

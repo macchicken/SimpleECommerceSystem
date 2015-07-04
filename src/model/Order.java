@@ -76,6 +76,8 @@ public class Order{
 	 */
 	private Timestamp createdTime;
 	
+	private int pageIndex;
+
 	public String getUser() {
 		return user;
 	}
@@ -194,6 +196,14 @@ public class Order{
 
 	public void setCreatedTime(Timestamp createdTime) {
 		this.createdTime = createdTime;
+	}
+
+	public int getPageIndex() {
+		return pageIndex;
+	}
+
+	public void setPageIndex(int pageIndex) {
+		this.pageIndex = pageIndex;
 	}
 
 }

@@ -1,4 +1,5 @@
 CREATE TABLE simple_order (
+  autoId int(5) NOT NULL AUTO_INCREMENT,
   id varchar(50) NOT NULL,
   address1 varchar(150) DEFAULT NULL,
   address2 varchar(150) DEFAULT NULL,
@@ -9,8 +10,8 @@ CREATE TABLE simple_order (
   user varchar(100) DEFAULT NULL,
   created_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (autoId,id)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 CREATE TABLE simple_order_item (
   id varchar(50) NOT NULL,

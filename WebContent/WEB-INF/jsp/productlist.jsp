@@ -9,7 +9,6 @@
 <title>Search products</title>
 </head>
 <body>
-<div id="wrap">
 
 <div id="header"></div>
 
@@ -22,7 +21,6 @@
 </div>
 <div id="cartfoot">
  <input type="button" class="btn btn-info btn-sm" href="${pageContext.request.contextPath}/eco/carts/checkout" name="checkout" id="checkout" value="Checkout">
-</div>
 </div>
 </div>
 

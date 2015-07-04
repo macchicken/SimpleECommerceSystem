@@ -142,7 +142,7 @@ public class CartAjaxController {
 	@RequestMapping("/discard")
 	public String disCard(Model model,@ModelAttribute("cart") Cart cart,@ModelAttribute("order") Order order,SessionStatus sessionStatus){
 		sessionStatus.setComplete();
-		model.addAttribute("success", "you have discarded this order");
+		model.addAttribute("messageContent", "you have discarded this order");
 		return "messagePage";
 	}
 
@@ -181,7 +181,7 @@ public class CartAjaxController {
 		cart.cleanCart();order.setCart(cart);
 		String success=transform(cart);
 		success+="<p>order "+newId+" is processing to "+order.getCity()+", shipping cost is $"+shippingCost+" final cost is $"+order.getTotalCost()+"</p>";
-		model.addAttribute("success", success);
+		model.addAttribute("messageContent", success);
 		odao.addNewOrder(order);
 		sessionStatus.setComplete();
 		return "messagePage";

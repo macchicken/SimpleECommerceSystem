@@ -12,13 +12,14 @@
 <title>Products Pages</title>
 </head>
 <body>
-<sec:authorize access="hasRole('ADMIN')">
+<sec:authorize access="hasRole('ROLE_ADMIN')">
 		<p><a id="oadmin" href="admin"> view all orders</a></p>
 </sec:authorize>
-<sec:authorize access="hasRole('USER')">
+<sec:authorize access="hasRole('ROLE_USER')">
 	<p>tag name to search</p>
 	<input type="text"  class="input-small" id="skeyword" name="skeyword" >
 	<input type="button" class="btn btn-info btn-sm" name="flickrsearch" id="flickrsearch" value="Search">
+	<p><a id="cartitems" href="products/search/cart"> view your cart items</a></p>
 	<p><a id="vorders" href="orders"> view your order</a></p>
 </sec:authorize>
 <p><a href="${pageContext.request.contextPath}/logout">Log Out</a></p>
@@ -46,6 +47,11 @@
 		e.preventDefault();
 		var oadminhref=$(this).attr("href");
 		$("#mainContent").load(oadminhref);
+	});
+	$("#cartitems").click(function(e){
+		e.preventDefault();
+		var cihref=$(this).attr("href");
+		$("#mainContent").load(cihref);
 	});
 	
 })
