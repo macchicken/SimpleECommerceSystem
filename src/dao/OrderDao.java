@@ -32,7 +32,7 @@ public class OrderDao implements IOrderDao{
 			deleteOrderSQL = "DELETE from simple_order where id = ?" ,
 			insertOrderSQL = "INSERT into simple_order(id,address1,address2,city,shippingCost,totalCost,state,user) values (?,?,?,?,?,?,?,?)" ,
 			insertOrderItemSQL = "INSERT into simple_order_item(id,order_id,quantity,product) values (?,?,?,?)" ,
-			updateOrderSQL = "UPDATE simple_order set address1=?,address2=?,city=?,shippingCost=?,totalCost=?,updated_time=sysdate() where id=?",
+			updateOrderSQL = "UPDATE simple_order set address1=?,address2=?,city=?,shippingCost=?,totalCost=?,updated_time=sysdate() where id=? and autoId=?",
 			updateOrderItemSql="INSERT into simple_order_item (id,order_id,quantity,product) values(?,?,?,?) ON DUPLICATE KEY UPDATE quantity=?",
 			updateOrderState="UPDATE simple_order set state=?,updated_time=sysdate() where id=? and autoId=?",
 			getRoundRows="SELECT FOUND_ROWS() totalr";
@@ -200,12 +200,14 @@ public class OrderDao implements IOrderDao{
 			ps=conn.prepareStatement(updateOrderSQL);
 			conn.setAutoCommit(false);
 			String orderId=order.getId();
+			int pageIndex=order.getPageIndex();
 			ps.setString(1, order.getAddress1());
 			ps.setString(2, order.getAddress2());
 			ps.setString(3, order.getCity());
 			ps.setDouble(4, order.getShippingCost());
 			ps.setDouble(5, order.getTotalCost());
 			ps.setString(6, orderId);
+			ps.setInt(7,pageIndex);
 			Collection<CartItem> cart=order.getCart().getItems();
 			ps2=conn.prepareStatement(updateOrderItemSql);
 			for (CartItem ci:cart){
