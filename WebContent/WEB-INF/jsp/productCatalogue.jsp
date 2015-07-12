@@ -35,7 +35,6 @@
                 <a href="${pageContext.request.contextPath}/eco/carts/remove/${product.productId}" class="remove" productId="${product.productId}">remove</a>
                 </td>
            </tr>
-
 </c:forEach>
  </tbody>
 </table>

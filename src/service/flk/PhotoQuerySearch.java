@@ -49,7 +49,7 @@ public class PhotoQuerySearch {
 	
 	/**
 	 * search photos with key words with desired page number
-	 * @param keywords - keywords would be sent to flikr in the 'tags' field
+	 * @param keywords - keywords would be sent to flickr in the 'tags' field
 	 * @return Products - list of photos from flickr
 	 * @see Products
 	 */

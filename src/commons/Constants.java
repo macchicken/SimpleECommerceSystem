@@ -8,17 +8,17 @@ package commons;
  */
 public interface Constants {
 	/**
-	 * api key of communicating with flickr
+	 * api key of communicating with Flickr
 	 */
 	public static final String API_KEY = "8d3fb09eae35f2c1e056e7aee9a9cf84";
 	/**
-	 * a photo search api of flickr
+	 * a photo search api of Flickr
 	 */
 	public static final String METHODSEARCH = "flickr.photos.search";
 	public static final String REST_ENDPOINT = "https://api.flickr.com/services/rest/";
 	public static final String SOAP_ENDPOINT="https://api.flickr.com/services/soap/";
 	/**
-	 * a number of photo to be retrieve from flickr
+	 * a number of photo to be retrieve from Flickr
 	 */
 	public static final String DEFAULT_NUMBER="10";
 	/**
@@ -31,7 +31,7 @@ public interface Constants {
 	 */
 	public static final double unitPrice=1;
 	/**
-	 * base priec of a photo
+	 * base price of a photo
 	 */
 	public static final double basePrice=2;
 	
