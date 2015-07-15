@@ -33,7 +33,8 @@ public class OrderDao implements IOrderDao{
 			insertOrderSQL = "INSERT into simple_order(id,address1,address2,city,shippingCost,totalCost,state,user) values (?,?,?,?,?,?,?,?)" ,
 			insertOrderItemSQL = "INSERT into simple_order_item(id,order_id,quantity,product) values (?,?,?,?)" ,
 			updateOrderSQL = "UPDATE simple_order set address1=?,address2=?,city=?,shippingCost=?,totalCost=?,updated_time=sysdate() where id=? and autoId=?",
-			updateOrderItemSql="INSERT into simple_order_item (id,order_id,quantity,product) values(?,?,?,?) ON DUPLICATE KEY UPDATE quantity=?",
+//			updateOrderItemSql="INSERT into simple_order_item (id,order_id,quantity,product) values(?,?,?,?) ON DUPLICATE KEY UPDATE quantity=?",
+			updateOrderItemSql="UPDATE simple_order_item set quantity=? where id=? and order_id=?",
 			updateOrderState="UPDATE simple_order set state=?,updated_time=sysdate() where id=? and autoId=?",
 			getRoundRows="SELECT FOUND_ROWS() totalr";
 	
@@ -211,11 +212,9 @@ public class OrderDao implements IOrderDao{
 			Collection<CartItem> cart=order.getCart().getItems();
 			ps2=conn.prepareStatement(updateOrderItemSql);
 			for (CartItem ci:cart){
-				ps2.setString(1, ci.getProduct().getProductId());
-				ps2.setString(2,orderId);
-				ps2.setInt(3,ci.getQuantity());
-				ps2.setObject(4, ci.getProduct());
-				ps2.setInt(5, ci.getQuantity());
+				ps2.setInt(1,ci.getQuantity());
+				ps2.setString(2,ci.getProduct().getProductId());
+				ps2.setString(3,orderId);
 				ps2.addBatch();
 			}
 			ps.execute();
