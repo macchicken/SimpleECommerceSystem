@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import commons.LogUtils;
 import service.flk.PhotoQuerySearch;
 
 /**
@@ -39,7 +40,8 @@ public class ProductController {
 	 * @see PhotoQuerySearch
 	 */
 	private PhotoQuerySearch qs=PhotoQuerySearch.getInstance();
-
+	private LogUtils logger=LogUtils.getInstance();
+	
 	/**
 	 * retreiving products with default search key word
 	 * @param model - spring model pass to frontController
@@ -64,7 +66,7 @@ public class ProductController {
 	}
 
 	/**
-	 * retreiving products with a search key word
+	 * Retrieving products with a search key word
 	 * @param keyword - search key word
 	 * @param pageNumber - desired search page number
 	 * @param continued - a flag for indicating its searching is continuing for next page
@@ -94,7 +96,7 @@ public class ProductController {
 			}
 			model.addAttribute("searchKeywords",keyword);
 		}
-		System.out.println("search keyword "+keyword);
+		logger.trace("search keyword "+keyword);
 		products=qs.getProducts(keyword,pageNumber);
 		result=products.getElementList();
 		Map<String,Product> sproducts=new HashMap<String,Product>();
@@ -113,7 +115,7 @@ public class ProductController {
 	}
 	
 	/**
-	 * retreiving products from the shopping cart
+	 * Retrieving products from the shopping cart
 	 * @param pageNumber - desired search page number
 	 * @param continued - a flag for indicating its searching is continuing for next page
 	 * @param model - spring model pass to frontController

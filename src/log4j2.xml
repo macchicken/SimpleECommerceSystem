@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="log-path">D:\\applogs\\SimpleECommerceSystem</Property>
+    </Properties>
+    <Appenders>
+        <Console name="consolelog" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"/>
+        </Console>
+        <RollingFile name="tracelog" fileName="${log-path}\\trace.log"
+                     filePattern="${log-path}\\trace-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="errorlog" fileName="${log-path}\\error.log"
+                     filePattern="${log-path}\\error-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="auditlog" fileName="${log-path}\\audit.log"
+                     filePattern="${log-path}\\audit-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.simleecs" level="debug" additivity="false">
+            <appender-ref ref="tracelog" level="debug"/>
+            <appender-ref ref="errorlog" level="error"/>
+            <appender-ref ref="auditlog" level="info"/>
+            <appender-ref ref="consolelog" level="debug"/>
+        </Logger>
+        <Root level="info" additivity="false">
+            <AppenderRef ref="consolelog"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import commons.LogUtils;
+
 /**
  * Controller of an user login
  * 
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes("currentUser")
 public class LoginController {
 
+	private LogUtils logger=LogUtils.getInstance();
+	
 	/**
 	 * to login page
 	 * @param model - spring model pass to frontController
@@ -67,6 +71,7 @@ public class LoginController {
 			}
 			SimpleUser my = new SimpleUser(name, roles);
 			model.addAttribute("currentUser", my);
+			logger.trace(name+" user login");
 		}
 		return "mainPage";
 	}

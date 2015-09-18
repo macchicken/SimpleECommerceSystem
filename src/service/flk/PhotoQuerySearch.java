@@ -18,6 +18,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 import commons.Constants;
+import commons.LogUtils;
 import commons.Tools;
 
 
@@ -30,7 +31,8 @@ import commons.Tools;
 public class PhotoQuerySearch {
 	
 	private static DocumentBuilder db;
-
+	private LogUtils logger=LogUtils.getInstance();
+	
 	private static class PhotoQuerySearchHolder{
 		private static final PhotoQuerySearch INSTANCE=new PhotoQuerySearch();
 		
@@ -58,7 +60,7 @@ public class PhotoQuerySearch {
 		try{
 			String callUrlStr = Constants.REST_ENDPOINT+"?method="+Constants.METHODSEARCH+
 			"&format=rest"+"&per_page="+Constants.DEFAULT_NUMBER+"&page="+pageNumber+"&api_key="+Constants.API_KEY+"&extras=tags,url_sq&tags="+keywords;
-			System.out.println(callUrlStr);
+			logger.trace(callUrlStr);
 			URL callUrl = new URL(callUrlStr);			
 			urlConnection = (HttpURLConnection)callUrl.openConnection();
 			urlStream = urlConnection.getInputStream();
