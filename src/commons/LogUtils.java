@@ -28,8 +28,13 @@ public class LogUtils {
 		AUDIT.info(message);
 	}
 	
-	public void error(String message){
-		ERROR.error(message);
+	public void error(Exception e){
+		StackTraceElement[] t=e.getStackTrace();
+		StringBuilder tt=new StringBuilder();
+		for (StackTraceElement ste:t){
+			tt.append(ste.toString());
+		}
+		ERROR.error(tt.toString());
 	}
 	
 	public void trace(String message){

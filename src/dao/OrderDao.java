@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import commons.LogUtils;
+
 import model.Cart;
 import model.CartItem;
 import model.Order;
@@ -24,6 +26,7 @@ import model.Product;
 public class OrderDao implements IOrderDao{
 
 	private ConnectionPool pool=ConnectionPool.getInstance();
+	private LogUtils logger=LogUtils.getInstance();
 
 	private String getOrderByIdSQL = "SELECT id,address1,address2,city,shippingCost,totalCost,state,user from simple_order where id = ?",
 			getOrderDetailByIdSQL = "SELECT t1.id as itemId,t1.order_id,t1.quantity,t1.product,t.id as id,t.address1,t.address2,t.city,t.shippingCost,t.totalCost,t.state,t.user,t.created_time FROM simple_order_item t1 right join simple_order t on(t1.order_id=t.id) where t.id=? and t.autoId=?",
@@ -72,7 +75,7 @@ public class OrderDao implements IOrderDao{
 			total=total/10;
 			if (tempt%10>0){total=total+1;}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}finally{
 			try {
 				if (rs!=null) {
@@ -91,7 +94,7 @@ public class OrderDao implements IOrderDao{
 					pool.freeConnection(conn);
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		return new PageModel<Order>(total,pageN,orders);
@@ -127,7 +130,7 @@ public class OrderDao implements IOrderDao{
 			order.setCart(cart);
 			order.setPageIndex(pageI);
 		} catch (SQLException | IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}finally{
 			try {
 				if (oips!=null){
@@ -143,7 +146,7 @@ public class OrderDao implements IOrderDao{
 					pool.freeConnection(conn);
 				}
 			} catch (SQLException | IOException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		return order;
@@ -178,7 +181,7 @@ public class OrderDao implements IOrderDao{
 			ps2.executeBatch();
 			conn.commit();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}finally{
 			try {
 				if (ps!=null) {
@@ -188,7 +191,7 @@ public class OrderDao implements IOrderDao{
 					pool.freeConnection(conn);
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 	}
@@ -221,7 +224,7 @@ public class OrderDao implements IOrderDao{
 			ps2.executeBatch();
 			conn.commit();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}finally{
 			try {
 				if (ps!=null) {
@@ -231,7 +234,7 @@ public class OrderDao implements IOrderDao{
 					pool.freeConnection(conn);
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 	}
@@ -265,7 +268,7 @@ public class OrderDao implements IOrderDao{
 			total=total/10;
 			if (tempt%10>0){total=total+1;}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}finally{
 			try {
 				if (rs!=null){
@@ -284,7 +287,7 @@ public class OrderDao implements IOrderDao{
 					pool.freeConnection(conn);
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		return new PageModel<Order>(total,pageN,result);
@@ -302,7 +305,7 @@ public class OrderDao implements IOrderDao{
 			int count=ps.executeUpdate();
 			if (count>0){return true;}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}try {
 			if (ps!=null) {
 				ps.close();
@@ -311,7 +314,7 @@ public class OrderDao implements IOrderDao{
 				pool.freeConnection(conn);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return false;
 	}

@@ -8,6 +8,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
+import commons.LogUtils;
+
 import model.Cart;
 import model.Order;
 import model.RestMessage;
@@ -28,6 +30,7 @@ public class RemoteServiceBridge {
 	 * remote address of the service
 	 */
 	private String remote;
+	private LogUtils logger=LogUtils.getInstance();
 	
 	private static class RemoteServiceBridgeHolder{
 		private static final RemoteServiceBridge INSTANCE=new RemoteServiceBridge();
@@ -43,7 +46,7 @@ public class RemoteServiceBridge {
 			properties.load(this.getClass().getResourceAsStream("/systemconfig.properties"));
 			remote=properties.getProperty("rest.remote");
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e);
 			System.out.println("exception on reading systemconfig.properties, using local service");
 			remote="http://localhost:10080/SimpleECommerceSystem";
 		}

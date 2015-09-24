@@ -93,13 +93,13 @@ public class PhotoQuerySearch {
 			}
 			return new PageModel<Product>(totalPage,currentPage,result);
 		}catch (Exception e){
-			e.printStackTrace();
+			logger.error(e);
 		}finally{
 			if (urlStream!=null){
 				try {
 					urlStream.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.error(e);
 				}
 			}
 			if (urlConnection!=null){

@@ -7,6 +7,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import commons.LogUtils;
+
 /**
  * a singleton pool holding the DataSource
  * 
@@ -17,6 +19,7 @@ import javax.sql.DataSource;
 public class ConnectionPool {
 
 	 private static DataSource ds = null;
+	 private LogUtils logger=LogUtils.getInstance();
 
 	 private ConnectionPool(){
 		try {
@@ -46,7 +49,7 @@ public class ConnectionPool {
 		try {
 			return ds.getConnection();
 		} catch (SQLException sqle) {
-			sqle.printStackTrace();
+			logger.error(sqle);
 			return null;
 		}
 	}
@@ -60,7 +63,7 @@ public class ConnectionPool {
 		try {
 			conn.close();
 		} catch (SQLException sqle) {
-			sqle.printStackTrace();
+			logger.error(sqle);
 		}
 	}
 
