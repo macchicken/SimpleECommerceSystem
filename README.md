@@ -4,13 +4,13 @@ a Simple E-Commerce System, just for a school work, initial deploy middleware is
 
 Use Spring 4 and integrate with spring security 4.0
 
-jersey as web service deployment framework, and use another buid config to create a new war package for rest service in the AWS
+jersey as web service deployment framework, and use another build config to create a new war package for rest service in the AWS
 
 use InternalResourceViewResolver as common view rendering engine
 
 jsp view file is used in this project
 
-main interaction between view page and controller is jax
+main interaction between view page and controller is ajax
 
 it has not used any json, i mainly use div load to cooperate all the data communications
 
