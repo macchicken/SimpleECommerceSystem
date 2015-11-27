@@ -1,0 +1,43 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+
+version = '1.0'
+
+dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+}
+
+war{
+	webAppDirName='WebContent'
+	webInf {
+	    into('classes') {
+	        from 'build/classes'
+	        exclude 'tmp/**'
+	    }
+	}
+	destinationDir=file('dist')
+}
+
+task restwar(type: War){
+	webAppDirName='WebContent'
+	baseName 'SimpleECommerceSystem-rest'
+	webXml=file('restConfig/web.xml')
+	webInf {
+	    into('classes') {
+	        from 'build/classes'
+	        exclude 'tmp/**'
+	        exclude 'dao/**'
+	        exclude 'controller/**'
+	        exclude 'service/**'
+	    }
+	}
+	exclude 'WEB-INF/jsp/**'
+	exclude 'WEB-INF/ecommerce-context.xml'
+	exclude 'WEB-INF/ecommerce-servlet.xml'
+	exclude 'WEB-INF/web.xml'
+	exclude 'index.jsp'
+	exclude 'resources/**'
+	exclude 'META-INF/context.xml'
+	destinationDir=file('dist')
+}
